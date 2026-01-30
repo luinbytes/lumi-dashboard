@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clawdbot Dashboard 🦞</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1 class="title">
+                <span class="title-lobster">🦞</span>
+                Clawdbot
+                <span class="title-lobster">🦞</span>
+            </h1>
+            <p class="subtitle">Space Lobbot Control Panel</p>
+        </header>
+
+        <!-- Main Dashboard -->
+        <main>
+            <!-- Face Display -->
+            <section class="face-section">
+                <div class="face-container" id="faceContainer">
+                    <!-- Antennae -->
+                    <div class="antenna left">
+                        <div class="antenna-stem"></div>
+                        <div class="antenna-tip"></div>
+                    </div>
+                    <div class="antenna right">
+                        <div class="antenna-stem"></div>
+                        <div class="antenna-tip"></div>
+                    </div>
+
+                    <!-- Face Base -->
+                    <div class="face">
+                        <!-- Eyes -->
+                        <div class="eye left">
+                            <div class="pupil"></div>
+                        </div>
+                        <div class="eye right">
+                            <div class="pupil"></div>
+                        </div>
+
+                        <!-- Nose -->
+                        <div class="nose"></div>
+
+                        <!-- Mouth/Mandibles -->
+                        <div class="mandibles">
+                            <div class="mandible left"></div>
+                            <div class="mandible right"></div>
+                        </div>
+
+                        <!-- Claws (decorative) -->
+                        <div class="claw left"></div>
+                        <div class="claw right"></div>
+                    </div>
+
+                    <!-- Status Label -->
+                    <div class="status-label" id="statusLabel">IDLE</div>
+                </div>
+
+                <!-- Expression Controls -->
+                <div class="expression-controls">
+                    <button class="btn" data-expression="idle">😴 Idle</button>
+                    <button class="btn" data-expression="happy">😊 Happy</button>
+                    <button class="btn" data-expression="thinking">🤔 Thinking</button>
+                    <button class="btn" data-expression="working">⚡ Working</button>
+                    <button class="btn" data-expression="error">❌ Error</button>
+                </div>
+            </section>
+
+            <!-- Stats Cards -->
+            <section class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">⏱️</div>
+                        <div class="stat-value" id="uptime">00:00:00</div>
+                        <div class="stat-label">Uptime</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💬</div>
+                        <div class="stat-value" id="sessions">0</div>
+                        <div class="stat-label">Sessions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-value" id="activity">0</div>
+                        <div class="stat-label">Activity</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-value" id="commands">0</div>
+                        <div class="stat-label">Commands</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Activity Log -->
+            <section class="activity-section">
+                <h2 class="section-title">🚀 Recent Activity</h2>
+                <div class="activity-log" id="activityLog">
+                    <div class="activity-item">
+                        <span class="activity-time">00:00:00</span>
+                        <span class="activity-message">System initialized</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Status Bar -->
+            <section class="status-bar">
+                <div class="status-indicator" id="statusIndicator"></div>
+                <span class="status-text" id="statusText">System Online</span>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>Built with 🦞 and cosmic energy</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
