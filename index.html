@@ -5,17 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clawdbot Dashboard 🦞</title>
     <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="Interactive Clawdbot dashboard with space lobster theme. Features real-time stats, activity log, and expressive lobster face.">
 </head>
 <body>
     <div class="stars"></div>
     <div class="container">
         <!-- Header -->
         <header>
-            <h1 class="title">
-                <span class="title-lobster">🦞</span>
-                Clawdbot
-                <span class="title-lobster">🦞</span>
-            </h1>
+            <div class="header-content">
+                <h1 class="title">
+                    <span class="title-lobster">🦞</span>
+                    Clawdbot
+                    <span class="title-lobster">🦞</span>
+                </h1>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </div>
             <p class="subtitle">Space Lobbot Control Panel</p>
         </header>
 
@@ -23,7 +29,7 @@
         <main>
             <!-- Face Display -->
             <section class="face-section">
-                <div class="face-container" id="faceContainer">
+                <div class="face-container" id="faceContainer" role="status" tabindex="0" aria-label="Interactive lobster face. Use arrow keys to cycle through expressions, press Enter or Space to activate current expression.">
                     <!-- Antennae -->
                     <div class="antenna left">
                         <div class="antenna-stem"></div>
@@ -59,38 +65,38 @@
                     </div>
 
                     <!-- Status Label -->
-                    <div class="status-label" id="statusLabel">IDLE</div>
+                    <div class="status-label" id="statusLabel" aria-live="polite">IDLE</div>
                 </div>
 
                 <!-- Expression Controls -->
                 <div class="expression-controls">
-                    <button class="btn" data-expression="idle">😴 Idle</button>
-                    <button class="btn" data-expression="happy">😊 Happy</button>
-                    <button class="btn" data-expression="thinking">🤔 Thinking</button>
-                    <button class="btn" data-expression="working">⚡ Working</button>
-                    <button class="btn" data-expression="error">❌ Error</button>
+                    <button class="btn" data-expression="idle" aria-label="Set expression to idle">😴 Idle</button>
+                    <button class="btn" data-expression="happy" aria-label="Set expression to happy">😊 Happy</button>
+                    <button class="btn" data-expression="thinking" aria-label="Set expression to thinking">🤔 Thinking</button>
+                    <button class="btn" data-expression="working" aria-label="Set expression to working">⚡ Working</button>
+                    <button class="btn" data-expression="error" aria-label="Set expression to error">❌ Error</button>
                 </div>
             </section>
 
             <!-- Stats Cards -->
-            <section class="stats-section">
+            <section class="stats-section" aria-label="Statistics">
                 <div class="stats-grid">
-                    <div class="stat-card">
+                    <div class="stat-card" aria-label="Uptime statistic">
                         <div class="stat-icon">⏱️</div>
                         <div class="stat-value" id="uptime">00:00:00</div>
                         <div class="stat-label">Uptime</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card" aria-label="Sessions statistic">
                         <div class="stat-icon">💬</div>
                         <div class="stat-value" id="sessions">0</div>
                         <div class="stat-label">Sessions</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card" aria-label="Activity statistic">
                         <div class="stat-icon">📊</div>
                         <div class="stat-value" id="activity">0</div>
                         <div class="stat-label">Activity</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card" aria-label="Commands statistic">
                         <div class="stat-icon">🎯</div>
                         <div class="stat-value" id="commands">0</div>
                         <div class="stat-label">Commands</div>
@@ -99,9 +105,9 @@
             </section>
 
             <!-- Activity Log -->
-            <section class="activity-section">
+            <section class="activity-section" aria-label="Activity log">
                 <h2 class="section-title">🚀 Recent Activity</h2>
-                <div class="activity-log" id="activityLog">
+                <div class="activity-log" id="activityLog" role="log" aria-live="polite" aria-label="Recent system activity log">
                     <div class="activity-item">
                         <span class="activity-time">00:00:00</span>
                         <span class="activity-message">System initialized</span>
@@ -110,8 +116,8 @@
             </section>
 
             <!-- Status Bar -->
-            <section class="status-bar">
-                <div class="status-indicator" id="statusIndicator"></div>
+            <section class="status-bar" role="status" aria-live="polite">
+                <div class="status-indicator" id="statusIndicator" aria-hidden="true"></div>
                 <span class="status-text" id="statusText">System Online</span>
             </section>
         </main>

@@ -16,6 +16,18 @@
     --error: #ff4757;
     --thinking: #3498db;
     --working: #f39c12;
+    --focus-ring: #00ff88;
+    --card-border: rgba(255, 107, 53, 0.3);
+}
+
+/* Light mode variables */
+body.light-mode {
+    --dark-bg: #f5f5f0;
+    --card-bg: rgba(255, 107, 53, 0.08);
+    --text-primary: #1a1a2e;
+    --text-secondary: #4a4a6a;
+    --focus-ring: #ff6b35;
+    --card-border: rgba(255, 107, 53, 0.4);
 }
 
 body {
@@ -24,6 +36,11 @@ body {
     min-height: 100vh;
     color: var(--text-primary);
     overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.light-mode .stars {
+    opacity: 0.3;
 }
 
 /* ===== STARS BACKGROUND ===== */
@@ -71,6 +88,66 @@ header {
     padding: 20px 0;
 }
 
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    position: relative;
+}
+
+.theme-toggle {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--card-bg);
+    border: 2px solid var(--primary-orange);
+    cursor: pointer;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.theme-toggle:hover {
+    background: var(--primary-orange);
+    transform: translateY(-50%) rotate(180deg);
+    box-shadow: 0 5px 20px rgba(255, 107, 53, 0.4);
+}
+
+.theme-toggle:focus-visible,
+.theme-toggle:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.theme-icon {
+    transition: transform 0.3s ease;
+}
+
+@media (max-width: 600px) {
+    .header-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .theme-toggle {
+        position: static;
+        transform: translateY(0);
+        margin-top: 10px;
+    }
+
+    .theme-toggle:hover {
+        transform: rotate(180deg);
+    }
+}
+
 .title {
     font-size: 3rem;
     font-weight: bold;
@@ -94,6 +171,7 @@ header {
     color: var(--text-secondary);
     font-size: 1.2rem;
     margin-top: 10px;
+    font-weight: 500;
 }
 
 @keyframes float {
@@ -113,6 +191,13 @@ header {
     width: 280px;
     height: 280px;
     margin: 20px auto;
+}
+
+.face-container:focus-visible,
+.face-container:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px var(--focus-ring), 0 0 30px rgba(255, 107, 53, 0.6);
+    border-radius: 50%;
 }
 
 /* ===== ANTENNAE ===== */
@@ -362,6 +447,12 @@ header {
     transform: translateY(0);
 }
 
+.btn:focus-visible,
+.btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--focus-ring), 0 0 20px rgba(255, 107, 53, 0.4);
+}
+
 /* ===== STATS SECTION ===== */
 .stats-section {
     margin-bottom: 40px;
@@ -375,7 +466,7 @@ header {
 
 .stat-card {
     background: var(--card-bg);
-    border: 2px solid rgba(255, 107, 53, 0.3);
+    border: 2px solid var(--card-border);
     border-radius: 15px;
     padding: 20px;
     text-align: center;
@@ -404,6 +495,7 @@ header {
 .stat-label {
     color: var(--text-secondary);
     font-size: 0.9rem;
+    font-weight: 500;
 }
 
 /* ===== ACTIVITY SECTION ===== */
@@ -415,16 +507,35 @@ header {
     font-size: 1.5rem;
     margin-bottom: 20px;
     color: var(--primary-orange);
+    font-weight: 700;
 }
 
 .activity-log {
     background: var(--card-bg);
-    border: 2px solid rgba(255, 107, 53, 0.3);
+    border: 2px solid var(--card-border);
     border-radius: 15px;
     padding: 20px;
     max-height: 200px;
     overflow-y: auto;
     backdrop-filter: blur(10px);
+}
+
+.activity-log::-webkit-scrollbar {
+    width: 8px;
+}
+
+.activity-log::-webkit-scrollbar-track {
+    background: var(--dark-bg);
+    border-radius: 4px;
+}
+
+.activity-log::-webkit-scrollbar-thumb {
+    background: var(--primary-orange);
+    border-radius: 4px;
+}
+
+.activity-log::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-orange);
 }
 
 .activity-item {
@@ -443,11 +554,13 @@ header {
     color: var(--text-secondary);
     font-size: 0.9rem;
     min-width: 80px;
+    font-weight: 500;
 }
 
 .activity-message {
     flex: 1;
     margin-left: 20px;
+    color: var(--text-primary);
 }
 
 @keyframes fadeIn {
@@ -463,9 +576,15 @@ header {
     gap: 15px;
     padding: 15px;
     background: var(--card-bg);
-    border: 2px solid rgba(255, 107, 53, 0.3);
+    border: 2px solid var(--card-border);
     border-radius: 15px;
     backdrop-filter: blur(10px);
+}
+
+.status-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
 }
 
 .status-indicator {

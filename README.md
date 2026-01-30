@@ -10,6 +10,8 @@ A fun, interactive dashboard for Clawdbot with a space lobster theme!
 - **Space Theme** - Animated stars, cosmic vibes, lobster orange accents
 - **Responsive Design** - Works on desktop and mobile
 - **Smooth Animations** - CSS animations for all face expressions and UI elements
+- **Accessibility** - Full keyboard navigation, ARIA labels, screen reader support
+- **Theme Toggle** - Switch between dark mode (default) and light mode with persistence
 
 ## Tech Stack
 
@@ -72,6 +74,37 @@ php -S localhost:8080
 ### Traditional Web Server
 Upload to any web hosting (Apache, Nginx, cPanel) - it's just static files!
 
+## Accessibility Features
+
+The dashboard is designed to be fully accessible with keyboard navigation and screen reader support:
+
+### Keyboard Navigation
+- **Tab key** - Navigate through all interactive elements
+- **Face container** - Press Tab to focus on the lobster face
+- **Arrow keys (←/→)** - Cycle through expressions when face is focused
+- **Enter/Space** - Activate the selected expression
+- **Escape** - Reset to idle expression
+
+### ARIA Labels
+- All buttons have descriptive labels for screen readers
+- Status updates are announced via `aria-live` regions
+- The face container has `role="status"` for proper screen reader behavior
+- Stats cards are labeled for easy identification
+
+### Visual Focus Indicators
+- High-contrast focus rings (green in dark mode, orange in light mode)
+- Clear visual feedback when navigating with keyboard
+- Animated focus states for interactive elements
+
+## Theme Toggle
+
+Switch between dark mode (default) and light mode:
+
+- **Dark Mode** - Space-themed with dark background and vibrant orange accents
+- **Light Mode** - Clean, light theme with improved readability for bright environments
+- **Persistence** - Your theme preference is saved to localStorage and remembered across sessions
+- **Keyboard Support** - Toggle theme with Tab + Enter/Space
+
 ## Face Expressions
 
 The lobster face has 5 different expressions:
@@ -106,6 +139,14 @@ The lobster face has 5 different expressions:
 - Stats update in real-time
 - Activity log fills with simulated events
 - Random expression changes every 15 seconds when idle
+- Toggle theme with the button in the header
+
+### Keyboard Shortcuts
+- **Tab** - Navigate between interactive elements
+- **Shift+Tab** - Navigate backwards
+- **Arrow Left/Right** - Cycle through face expressions (when focused)
+- **Enter/Space** - Activate selected expression or toggle theme
+- **Escape** - Reset expression to idle
 
 ## File Structure
 
@@ -165,11 +206,12 @@ Works in all modern browsers:
 
 - Add sound effects for expression changes
 - Integrate with real Clawdbot API for live stats
-- Add theme toggle (dark/light mode)
 - Create custom expression builder
 - Add notification system
 - Export stats as CSV
-- Add user preferences
+- Add more user preferences
+- Add high contrast mode for better accessibility
+- Implement animation speed controls
 
 ## Have Fun! 🦞
 
