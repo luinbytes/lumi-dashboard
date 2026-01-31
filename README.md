@@ -1,17 +1,78 @@
-# 🦞 Clawdbot Webpanel
+# 🦞 Clawdbot Webpanel v2.0
 
-A fun, interactive dashboard for Clawdbot with a space lobster theme!
+A fun, interactive dashboard for Clawdbot with a space lobster theme! Now v2.0 with command input, sound effects, and more!
 
-## Features
+## v2.0 New Features ✨
 
-- **Interactive Lobster Face** - Expressions change based on state (idle, happy, thinking, working, error)
-- **Real-time Stats** - Uptime counter, session count, activity tracking, command stats
-- **Activity Log** - Live updates of system events
-- **Space Theme** - Animated stars, cosmic vibes, lobster orange accents
-- **Responsive Design** - Works on desktop and mobile
-- **Smooth Animations** - CSS animations for all face expressions and UI elements
-- **Accessibility** - Full keyboard navigation, ARIA labels, screen reader support
-- **Theme Toggle** - Switch between dark mode (default) and light mode with persistence
+### Command Input 💬
+- **Real-time Commands** - Send commands to Clawdbot
+- **Command History** - Navigate history with Arrow Up/Down
+- **Auto-responses** - Pre-programmed responses for common commands
+- **Smart detection** - Commands like "help", "sleep", "dance" trigger special reactions
+
+### More Expressions 🎭
+- **8 total expressions** (up from 5): Idle, Happy, Thinking, Working, Error, **Excited**, **Confused**, **Sleeping**
+- **Excited** - Bouncing face with party vibes
+- **Confused** - Tilted face with pondering expression
+- **Sleeping** - Half-closed eyes, gentle pulsing animation
+- **Random idle animations** - More variety when idle
+
+### Sound Effects 🔊
+- **Toggle sounds** - Enable/disable sound effects
+- **Expression sounds** - Different tones for different states
+- **Command sounds** - Audio feedback when sending commands
+- **Web Audio API** - No external dependencies needed
+- **Persistent setting** - Sound preference saved to localStorage
+
+### Animation Speed Controls ⚡
+- **Adjustable speed** - Speed up or slow down animations
+- **Range: 25% to 300%** - Find your perfect speed
+- **Quick toggles** - Use 🐢 or 🚀 buttons
+- **Saved preference** - Speed setting remembered
+
+### Enhanced Statistics 📊
+- **6 stat cards** (up from 4): Uptime, Sessions, Activity, Commands, **Errors**, **Responses**
+- **Better tracking** - More detailed metrics
+- **Real-time updates** - Stats update as you interact
+
+### Improved Export Options 📄
+- **JSON export** - Full dashboard state and history
+- **CSV export** - Activity log in spreadsheet format
+- **PNG export** - Screenshot of dashboard (requires html2canvas)
+- **Clear log** - Quick button to wipe activity log
+- **More data** - Exports include command history and full stats
+
+### Activity Log Types 🏷️
+- **Color-coded entries** - Different colors for different types:
+  - **Info** (blue) - General updates
+  - **Command** (orange) - User commands sent
+  - **Response** (green) - Bot responses
+  - **Warning** (yellow) - Important notices
+- **Visual distinction** - Easy to scan through logs
+
+### Keyboard Shortcuts ⌨️
+- **Command history** - Arrow Up/Down to navigate
+- **Sound toggle** - New button in header
+- **Expression cycling** - Still works with arrow keys
+- **All shortcuts** - Improved and more intuitive
+
+### Better Accessibility ♿
+- **ARIA labels** - Added for all new elements
+- **Focus management** - Better keyboard navigation flow
+- **Screen reader support** - Live regions for dynamic updates
+- **Color contrast** - Improved in both themes
+
+## Existing Features (Still Here!)
+
+### Interactive Lobster Face
+- Expressions change based on state (idle, happy, thinking, working, error)
+- Real-time stats
+- Activity log
+- Space theme
+- Responsive design
+- Smooth animations
+- Theme toggle (dark/light)
+- Full keyboard navigation
 
 ## Tech Stack
 
@@ -19,15 +80,7 @@ A fun, interactive dashboard for Clawdbot with a space lobster theme!
 - **CSS Animations** - All face expressions and transitions are CSS-based
 - **Vanilla JS** - Simple, lightweight, and fast
 - **Static Files** - Host anywhere that serves static content
-
-## Why This Stack?
-
-I chose vanilla HTML/CSS/JS because:
-1. **Zero dependencies** - No npm install, no node_modules, no build step
-2. **Instant iteration** - Edit files and refresh browser
-3. **Universal hosting** - Works on GitHub Pages, Netlify, Vercel, any web server
-4. **Lightweight** - Entire app is ~25KB total
-5. **Easy to understand** - Clean, readable code that's fun to play with
+- **html2canvas** - CDN link for PNG export (optional)
 
 ## How to Run Locally
 
@@ -36,16 +89,11 @@ I chose vanilla HTML/CSS/JS because:
 cd clawdbot-webpanel
 python3 -m http.server 8080
 ```
-Then open http://localhost:8080 in your browser.
 
 ### Option 2: Node.js
 ```bash
 cd clawdbot-webpanel
 npx serve
-```
-Or if you have serve installed:
-```bash
-serve -p 8080
 ```
 
 ### Option 3: PHP
@@ -54,145 +102,138 @@ cd clawdbot-webpanel
 php -S localhost:8080
 ```
 
-## Deployment Options
+## Command Examples
 
-### GitHub Pages
-1. Push this folder to a GitHub repository
-2. Go to Settings > Pages
-3. Select main branch and save
-4. Your dashboard will be at `https://username.github.io/repo-name/`
+Try these commands in the input field:
 
-### Netlify
-1. Drag and drop the folder to https://app.netlify.com/drop
-2. Instant deployment with HTTPS
+### Basic Commands
+```
+help      - Shows available commands
+status    - Shows current status
+uptime    - Displays uptime information
+```
 
-### Vercel
-1. Install Vercel CLI: `npm i -g vercel`
-2. Run: `vercel` in the project directory
-3. Follow the prompts
+### Fun Commands
+```
+sleep     - Puts lobster to sleep (3 seconds)
+dance      - Makes lobster dance and get excited
+party      - Same as dance - party mode!
+hmm        - Makes lobster confused
+??         - Same as hmm - confusion
+hello      - Friendly greeting
+```
 
-### Traditional Web Server
-Upload to any web hosting (Apache, Nginx, cPanel) - it's just static files!
+### Error Simulation
+```
+error     - Simulates an error state
+fail      - Same as error
+```
 
-## Accessibility Features
+### Command History
+- Press **Arrow Up** to navigate to previous commands
+- Press **Arrow Down** to navigate to next command
+- History stores **last 50 commands**
+- Press **Enter** to send
 
-The dashboard is designed to be fully accessible with keyboard navigation and screen reader support:
+## Controls
 
-### Keyboard Navigation
-- **Tab key** - Navigate through all interactive elements
-- **Face container** - Press Tab to focus on the lobster face
-- **Arrow keys (←/→)** - Cycle through expressions when face is focused
-- **Enter/Space** - Activate the selected expression
-- **Escape** - Reset to idle expression
+### Face Expressions
+Click expression buttons or use keyboard when face is focused:
+- **Tab** - Navigate to face
+- **Arrow Left/Right** - Cycle through expressions
+- **Enter/Space** - Activate selected expression
 
-### ARIA Labels
-- All buttons have descriptive labels for screen readers
-- Status updates are announced via `aria-live` regions
-- The face container has `role="status"` for proper screen reader behavior
-- Stats cards are labeled for easy identification
+### Sound Toggle
+- **Tab** to the sound toggle button
+- **Enter/Space** to toggle sound on/off
+- Preference is saved to localStorage
 
-### Visual Focus Indicators
-- High-contrast focus rings (green in dark mode, orange in light mode)
-- Clear visual feedback when navigating with keyboard
-- Animated focus states for interactive elements
+### Animation Speed
+- Click **🚀** to increase speed (up to 300%)
+- Click **🐢** to decrease speed (down to 25%)
+- Setting is saved for future visits
 
-## Theme Toggle
+## Export Options
 
-Switch between dark mode (default) and light mode:
+### JSON Export
+Exports complete dashboard state:
+```json
+{
+  "stats": { ... },
+  "uptime": "2026-01-31T02:00:00.000Z",
+  "expressions": ["idle", "happy", ...],
+  "activityLog": [ ... ],
+  "commandHistory": [ ... ]
+}
+```
 
-- **Dark Mode** - Space-themed with dark background and vibrant orange accents
-- **Light Mode** - Clean, light theme with improved readability for bright environments
-- **Persistence** - Your theme preference is saved to localStorage and remembered across sessions
-- **Keyboard Support** - Toggle theme with Tab + Enter/Space
+### CSV Export
+Exports activity log in spreadsheet format:
+```csv
+Time,Message,Type
+2026-01-31T02:00:00.000Z,"Command sent: help","command"
+2026-01-31T02:00:01.000Z,"Response to: help","response"
+```
 
-## Face Expressions
-
-The lobster face has 5 different expressions:
-
-1. **IDLE** 😴 - Default state, subtle breathing animation
-2. **HAPPY** 😊 - Bouncing face, squinting happy eyes, green status
-3. **THINKING** 🤔 - Eyes looking back and forth, antennae twitching, blue status
-4. **WORKING** ⚡ - Pulsing face, fast mandible movement, orange status
-5. **ERROR** ❌ - Red X eyes, shaking face, red status
-
-## Features Breakdown
-
-### Dashboard Layout
-- **Header** - Animated title with lobster emojis
-- **Face Section** - Interactive lobster face with expression controls
-- **Stats Cards** - 4 stat cards with hover effects
-- **Activity Log** - Scrollable log of recent events
-- **Status Bar** - Current system status indicator
-
-### Animations
-- **Twinkling stars** background
-- **Floating title** effect
-- **Blinking eyes** with pupil movement
-- **Antennae waving** independently
-- **Mandible movement** for all expressions
-- **Claw waving** decoration
-- **Pulsing status** indicators
-- **Smooth transitions** between states
-
-### Interactive Elements
-- Click expression buttons to change the lobster's mood
-- Stats update in real-time
-- Activity log fills with simulated events
-- Random expression changes every 15 seconds when idle
-- Toggle theme with the button in the header
-
-### Keyboard Shortcuts
-- **Tab** - Navigate between interactive elements
-- **Shift+Tab** - Navigate backwards
-- **Arrow Left/Right** - Cycle through face expressions (when focused)
-- **Enter/Space** - Activate selected expression or toggle theme
-- **Escape** - Reset expression to idle
+### PNG Export
+Captures a screenshot of the current dashboard state. Requires `html2canvas` library (loaded via CDN).
 
 ## File Structure
 
 ```
 clawdbot-webpanel/
-├── index.html    # Main HTML structure
+├── index.html    # Main HTML structure (v2.0)
 ├── styles.css    # All styles and animations
-├── script.js     # Interactive logic
+├── script.js     # Interactive logic (v2.0)
 └── README.md     # This file
 ```
 
 ## Customization
 
 ### Changing Colors
-Edit the CSS variables in `styles.css`:
+Edit CSS variables in `styles.css`:
 ```css
 :root {
-    --primary-orange: #ff6b35;    -- Main lobster color
-    --secondary-orange: #ff8c61;  -- Lighter orange
-    --dark-bg: #0a0a1a;           -- Background color
-    --success: #00ff88;           -- Happy/success color
-    --error: #ff4757;             -- Error color
-    --thinking: #3498db;          -- Thinking color
-    --working: #f39c12;           -- Working color
+    --primary-orange: #ff6b35;    /* Main lobster color */
+    --secondary-orange: #ff8c61;  /* Lighter orange */
+    --dark-bg: #0a0a1a;           /* Background color */
+    --success: #00ff88;           /* Happy/success color */
+    --error: #ff4757;             /* Error color */
+    --thinking: #3498db;          /* Thinking color */
+    --working: #f39c12;           /* Working color */
+    --excited: #ff69b4;           /* Excited color */
+    --confused: #9b59b6;           /* Confused color */
+    --sleeping: #95a5a6;          /* Sleeping color */
 }
 ```
 
 ### Adjusting Speeds
-Modify animation durations in `styles.css`:
-- Change `animation: Xs` to make animations faster or slower
-- Adjust intervals in `script.js` (e.g., `setInterval(..., 8000)`)
+Animation speed is controlled via CSS variable `--anim-speed`:
+- Default: 1.0 (100%)
+- Minimum: 0.25 (25%)
+- Maximum: 3.0 (300%)
+- Modified by speed controls buttons
 
-### Adding New Stats
-1. Add HTML in `index.html` stats section
-2. Add CSS styles for new stat card
-3. Initialize and update in `script.js`
+### Adding Custom Commands
+Edit `sendCommand()` function in `script.js`:
+```javascript
+if (command.toLowerCase().includes('yourcommand')) {
+    this.setExpression('happy');
+    this.logActivity('Your custom response here', 'response');
+}
+```
 
 ## Fun Facts
 
-- The lobster has over 15 different animations
+- The lobster has **8 different expressions** now (up from 5)
 - Stars twinkle in the background continuously
 - The face blinks every 4 seconds
 - Pupils move around randomly when idle
 - Antennae wave independently of each other
-- Activity log automatically limits to 10 items
-- Total file size: ~25KB (smaller than many images!)
+- Activity log auto-limits to **20 items** in display (up from 10)
+- Command history stores **last 50 commands**
+- Sound effects use **Web Audio API** (no dependencies)
+- Total file size: ~40KB (still very small!)
 
 ## Browser Support
 
@@ -204,19 +245,70 @@ Works in all modern browsers:
 
 ## Ideas for Future Enhancements
 
-- Add sound effects for expression changes
-- Integrate with real Clawdbot API for live stats
-- Create custom expression builder
-- Add notification system
-- Export stats as CSV
-- Add more user preferences
-- Add high contrast mode for better accessibility
-- Implement animation speed controls
+- [ ] Real WebSocket connection to actual Clawdbot
+- [ ] Sound effects library (different beeps, chirps)
+- [ ] Custom expression builder UI
+- [ ] Notification system integration
+- [ ] Command alias system
+- [ ] Multi-server support
+- [ ] Widget/embeddable mode
+- [ ] REST API for external integration
+- [ ] Dark/Light mode presets
+- [ ] High contrast mode for better accessibility
+
+## Accessibility Features
+
+The dashboard v2.0 is designed to be fully accessible:
+
+### Keyboard Navigation
+- **Tab** - Navigate through all interactive elements
+- **Arrow Left/Right** - Cycle through expressions
+- **Arrow Up/Down** - Navigate command history
+- **Enter/Space** - Activate selected element
+- **Escape** - Reset to idle expression
+
+### ARIA Labels
+- All buttons have descriptive labels
+- Status updates are announced via `aria-live` regions
+- Activity types are announced with context
+- Command input has proper hints
+
+### Visual Focus Indicators
+- High-contrast focus rings
+- Clear visual feedback for all interactions
+- Animated focus states
+- Color-coded activity types
+
+## v2.0 Changelog
+
+### Added
+- Command input with history navigation
+- 3 new expressions (excited, confused, sleeping)
+- Sound effects toggle
+- Animation speed controls (25% - 300%)
+- 2 new stat cards (errors, responses)
+- PNG screenshot export
+- Activity log types with color coding
+- Clear log button
+- Footer links
+- Mobile responsiveness improvements
+
+### Improved
+- Better keyboard navigation
+- Enhanced accessibility
+- Improved command handling
+- More responsive design
+- Better localStorage persistence
+
+### Fixed
+- Expression cycling issues
+- Theme toggle persistence
+- Activity log formatting
 
 ## Have Fun! 🦞
 
-This dashboard is designed to be playful and engaging. Click around, watch the animations, and enjoy the space lobster vibes!
+This dashboard is designed to be playful and engaging. Send commands, watch animations, adjust speed, toggle sounds, and enjoy the space lobster vibes!
 
 ---
 
-Built with 🦞 and cosmic energy by Lumi
+Built with 🦞 and cosmic energy v2.0 by Lumi (Lu's AI Assistant)
