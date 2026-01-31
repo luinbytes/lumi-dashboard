@@ -1,17 +1,24 @@
-// ===== CLAWDBOT DASHBOARD SCRIPT =====
+// ===== CLAWDBOT DASHBOARD SCRIPT v2.0 =====
 
 class ClawdbotDashboard {
     constructor() {
         this.startTime = new Date();
         this.currentExpression = 'idle';
+        this.animationSpeed = 1.0;
+        this.soundEnabled = false;
         this.stats = {
             sessions: 42,
             activity: 156,
-            commands: 89
+            commands: 89,
+            uptime: 0,
+            errors: 3,
+            responses: 245
         };
-        this.expressions = ['idle', 'happy', 'thinking', 'working', 'error'];
+        this.expressions = ['idle', 'happy', 'thinking', 'working', 'error', 'excited', 'confused', 'sleeping'];
         this.currentExpressionIndex = 0;
         this.activityLogData = []; // Store all activity for export
+        this.commandHistory = [];
+        this.historyIndex = -1;
         this.init();
     }
 
@@ -20,12 +27,16 @@ class ClawdbotDashboard {
         this.setupKeyboardNavigation();
         this.setupThemeToggle();
         this.setupExportButtons();
+        this.setupCommandInput();
+        this.setupSoundToggle();
+        this.setupSpeedControls();
         this.loadSavedTheme();
+        this.loadSavedSettings();
         this.startUptimeCounter();
         this.startActivitySimulation();
         this.updateStats();
         this.startRandomExpressionChanges();
-        this.logActivity('Dashboard loaded successfully', 'info');
+        this.logActivity('Dashboard v2.0 loaded successfully', 'info');
     }
 
     // ===== EXPRESSION CONTROLS =====
@@ -42,7 +53,9 @@ class ClawdbotDashboard {
     // ===== KEYBOARD NAVIGATION =====
     setupKeyboardNavigation() {
         const faceContainer = document.getElementById('faceContainer');
+        const commandInput = document.getElementById('commandInput');
 
+        // Face navigation
         faceContainer.addEventListener('keydown', (e) => {
             switch(e.key) {
                 case 'ArrowRight':
@@ -60,6 +73,33 @@ class ClawdbotDashboard {
                     break;
             }
         });
+
+        // Command input navigation
+        commandInput.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                this.navigateHistory(-1);
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                this.navigateHistory(1);
+            }
+        });
+    }
+
+    navigateHistory(direction) {
+        const commandInput = document.getElementById('commandInput');
+        
+        if (direction === -1) {
+            this.historyIndex = Math.min(this.historyIndex + 1, this.commandHistory.length - 1);
+        } else if (direction === 1) {
+            this.historyIndex = Math.max(this.historyIndex - 1, -1);
+        }
+
+        if (this.historyIndex >= 0 && this.historyIndex < this.commandHistory.length) {
+            commandInput.value = this.commandHistory[this.commandHistory.length - 1 - this.historyIndex];
+        } else {
+            commandInput.value = '';
+        }
     }
 
     // ===== EXPORT BUTTONS =====
@@ -71,39 +111,164 @@ class ClawdbotDashboard {
         document.getElementById('exportCSV').addEventListener('click', () => {
             this.exportToCSV();
         });
+
+        document.getElementById('exportPNG')?.addEventListener('click', () => {
+            this.exportToPNG();
+        });
+
+        document.getElementById('clearLog')?.addEventListener('click', () => {
+            this.clearActivityLog();
+        });
     }
 
-    // ===== EXPRESSION CONTROLS =====
-    setupExpressionControls() {
-        const faceContainer = document.getElementById('faceContainer');
+    // ===== COMMAND INPUT =====
+    setupCommandInput() {
+        const commandInput = document.getElementById('commandInput');
+        const sendButton = document.getElementById('sendCommand');
 
-        faceContainer.addEventListener('keydown', (e) => {
-            switch(e.key) {
-                case 'ArrowRight':
-                    e.preventDefault();
-                    this.nextExpression();
-                    break;
-                case 'ArrowLeft':
-                    e.preventDefault();
-                    this.previousExpression();
-                    break;
-                case 'Enter':
-                case ' ':
-                    e.preventDefault();
-                    this.setExpression(this.expressions[this.currentExpressionIndex]);
-                    break;
+        const sendCommand = () => {
+            const command = commandInput.value.trim();
+            if (command) {
+                this.sendCommand(command);
+                commandInput.value = '';
+                this.commandHistory.push(command);
+                this.historyIndex = -1;
+                
+                // Limit history to 50 commands
+                if (this.commandHistory.length > 50) {
+                    this.commandHistory.shift();
+                }
+            }
+        };
+
+        sendButton.addEventListener('click', sendCommand);
+        commandInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                sendCommand();
             }
         });
     }
 
-    nextExpression() {
-        this.currentExpressionIndex = (this.currentExpressionIndex + 1) % this.expressions.length;
-        this.logActivity(`Previewing: ${this.expressions[this.currentExpressionIndex].toUpperCase()}`, 'info');
+    sendCommand(command) {
+        // Simulate command processing
+        this.logActivity(`Command sent: ${command}`, 'command');
+        this.stats.commands++;
+        this.updateStats();
+
+        // Set expression based on command
+        if (command.toLowerCase().includes('error') || command.toLowerCase().includes('fail')) {
+            this.setExpression('error');
+        } else if (command.toLowerCase().includes('help')) {
+            this.setExpression('thinking');
+            setTimeout(() => {
+                this.logActivity('Help: Available commands - status, uptime, stats, clear, sleep', 'info');
+            }, 1000);
+        } else if (command.toLowerCase().includes('status')) {
+            this.setExpression('happy');
+        } else if (command.toLowerCase().includes('sleep')) {
+            this.setExpression('sleeping');
+            setTimeout(() => this.setExpression('idle'), 3000);
+        } else if (command.toLowerCase().includes('dance') || command.toLowerCase().includes('party')) {
+            this.setExpression('excited');
+        } else if (command.toLowerCase().includes('hmm') || command.toLowerCase().includes('??')) {
+            this.setExpression('confused');
+        } else {
+            this.setExpression('working');
+            setTimeout(() => {
+                this.setExpression('happy');
+                this.logActivity(`Response to: ${command}`, 'response');
+            }, 1000 + Math.random() * 1000);
+        }
+
+        // Play sound if enabled
+        if (this.soundEnabled) {
+            this.playSound('command');
+        }
     }
 
-    previousExpression() {
-        this.currentExpressionIndex = (this.currentExpressionIndex - 1 + this.expressions.length) % this.expressions.length;
-        this.logActivity(`Previewing: ${this.expressions[this.currentExpressionIndex].toUpperCase()}`, 'info');
+    // ===== SOUND TOGGLE =====
+    setupSoundToggle() {
+        const soundToggle = document.getElementById('soundToggle');
+        if (!soundToggle) return;
+
+        soundToggle.addEventListener('click', () => {
+            this.toggleSound();
+        });
+
+        soundToggle.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                this.toggleSound();
+            }
+        });
+
+        // Update toggle button appearance
+        this.updateSoundToggleUI();
+    }
+
+    toggleSound() {
+        this.soundEnabled = !this.soundEnabled;
+        localStorage.setItem('clawdbot-sound', this.soundEnabled ? 'enabled' : 'disabled');
+        this.logActivity(`Sound ${this.soundEnabled ? 'enabled' : 'disabled'}`, 'info');
+        this.updateSoundToggleUI();
+    }
+
+    updateSoundToggleUI() {
+        const soundToggle = document.getElementById('soundToggle');
+        if (!soundToggle) return;
+
+        soundToggle.textContent = this.soundEnabled ? '🔊' : '🔇';
+        soundToggle.setAttribute('aria-label', `Sound ${this.soundEnabled ? 'enabled' : 'disabled'}`);
+    }
+
+    playSound(type) {
+        // Create simple beep using Web Audio API
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            oscillator.frequency.value = type === 'command' ? 440 : (type === 'error' ? 220 : 523);
+            oscillator.type = 'sine';
+            gainNode.gain.value = 0.1;
+
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.1);
+        } catch (e) {
+            console.error('Audio API not available:', e);
+        }
+    }
+
+    // ===== SPEED CONTROLS =====
+    setupSpeedControls() {
+        const speedUp = document.getElementById('speedUp');
+        const speedDown = document.getElementById('speedDown');
+        const speedDisplay = document.getElementById('speedDisplay');
+
+        if (!speedUp || !speedDown) return;
+
+        speedUp.addEventListener('click', () => {
+            this.animationSpeed = Math.min(this.animationSpeed + 0.25, 3.0);
+            this.updateSpeedDisplay();
+        });
+
+        speedDown.addEventListener('click', () => {
+            this.animationSpeed = Math.max(this.animationSpeed - 0.25, 0.25);
+            this.updateSpeedDisplay();
+        });
+    }
+
+    updateSpeedDisplay() {
+        const speedDisplay = document.getElementById('speedDisplay');
+        if (speedDisplay) {
+            speedDisplay.textContent = `${(this.animationSpeed * 100).toFixed(0)}%`;
+            // Update CSS variable for animation speed
+            document.documentElement.style.setProperty('--anim-speed', (1 / this.animationSpeed).toString());
+        }
+        localStorage.setItem('clawdbot-speed', this.animationSpeed.toString());
     }
 
     // ===== THEME TOGGLE =====
@@ -113,7 +278,6 @@ class ClawdbotDashboard {
             this.toggleTheme();
         });
 
-        // Keyboard support for theme toggle
         themeToggle.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
@@ -131,9 +295,7 @@ class ClawdbotDashboard {
         const isLightMode = body.classList.contains('light-mode');
         themeIcon.textContent = isLightMode ? '☀️' : '🌙';
 
-        // Save preference to localStorage
         localStorage.setItem('clawdbot-theme', isLightMode ? 'light' : 'dark');
-
         this.logActivity(`Theme changed to ${isLightMode ? 'light' : 'dark'} mode`, 'info');
     }
 
@@ -147,6 +309,23 @@ class ClawdbotDashboard {
         }
     }
 
+    loadSavedSettings() {
+        // Load sound setting
+        const savedSound = localStorage.getItem('clawdbot-sound');
+        if (savedSound === 'enabled') {
+            this.soundEnabled = true;
+        }
+
+        // Load animation speed
+        const savedSpeed = localStorage.getItem('clawdbot-speed');
+        if (savedSpeed) {
+            this.animationSpeed = parseFloat(savedSpeed);
+            this.updateSpeedDisplay();
+        }
+
+        this.updateSoundToggleUI();
+    }
+
     setExpression(expression) {
         const faceContainer = document.getElementById('faceContainer');
         const statusLabel = document.getElementById('statusLabel');
@@ -154,7 +333,7 @@ class ClawdbotDashboard {
         const statusIndicator = document.getElementById('statusIndicator');
 
         // Remove all expression classes
-        faceContainer.classList.remove('happy', 'thinking', 'working', 'error', 'idle');
+        faceContainer.classList.remove('happy', 'thinking', 'working', 'error', 'idle', 'excited', 'confused', 'sleeping');
 
         // Add new expression class
         faceContainer.classList.add(expression);
@@ -169,9 +348,12 @@ class ClawdbotDashboard {
             happy: 'HAPPY',
             thinking: 'THINKING',
             working: 'WORKING',
-            error: 'ERROR'
+            error: 'ERROR',
+            excited: 'EXCITED',
+            confused: 'CONFUSED',
+            sleeping: 'SLEEPING'
         };
-        statusLabel.textContent = labels[expression];
+        statusLabel.textContent = labels[expression] || 'IDLE';
 
         // Update status text and indicator
         const statusMessages = {
@@ -179,16 +361,24 @@ class ClawdbotDashboard {
             happy: { text: 'Everything is awesome! 🎉', color: '#00ff88' },
             thinking: { text: 'Processing request...', color: '#3498db' },
             working: { text: 'Executing tasks...', color: '#f39c12' },
-            error: { text: 'Something went wrong!', color: '#ff4757' }
+            error: { text: 'Something went wrong!', color: '#ff4757' },
+            excited: { text: 'Party time! 🎉', color: '#ff69b4' },
+            confused: { text: 'Hm, let me think...', color: '#9b59b6' },
+            sleeping: { text: 'Zzz... taking a nap', color: '#95a5a6' }
         };
 
-        const status = statusMessages[expression];
+        const status = statusMessages[expression] || statusMessages.idle;
         statusText.textContent = status.text;
         statusIndicator.style.background = status.color;
         statusIndicator.style.boxShadow = `0 0 10px ${status.color}`;
 
-        // Log the expression change
+        // Log expression change
         this.logActivity(`Expression changed to: ${expression.toUpperCase()}`, 'info');
+
+        // Play sound if enabled
+        if (this.soundEnabled) {
+            this.playSound('expression');
+        }
     }
 
     // ===== UPTIME COUNTER =====
@@ -203,6 +393,7 @@ class ClawdbotDashboard {
             const minutes = Math.floor((diff % 3600000) / 60000);
             const seconds = Math.floor((diff % 60000) / 1000);
 
+            this.stats.uptime = diff;
             uptimeElement.textContent = this.formatTime(hours, minutes, seconds);
         }, 1000);
     }
@@ -220,11 +411,19 @@ class ClawdbotDashboard {
         document.getElementById('sessions').textContent = this.stats.sessions;
         document.getElementById('activity').textContent = this.stats.activity;
         document.getElementById('commands').textContent = this.stats.commands;
+        
+        // Update additional stats if elements exist
+        const errorsElement = document.getElementById('errors');
+        const responsesElement = document.getElementById('responses');
+        if (errorsElement) errorsElement.textContent = this.stats.errors;
+        if (responsesElement) responsesElement.textContent = this.stats.responses;
 
         // Simulate stats updates
         setInterval(() => {
             this.stats.activity += Math.floor(Math.random() * 3);
-            document.getElementById('activity').textContent = this.stats.activity;
+            if (document.getElementById('activity')) {
+                document.getElementById('activity').textContent = this.stats.activity;
+            }
         }, 5000);
     }
 
@@ -239,64 +438,77 @@ class ClawdbotDashboard {
         );
 
         const activityItem = document.createElement('div');
-        activityItem.className = 'activity-item';
+        activityItem.className = `activity-item type-${type}`;
         activityItem.innerHTML = `
             <span class="activity-time">${time}</span>
             <span class="activity-message">${message}</span>
+            <span class="activity-type">${type}</span>
         `;
 
         // Add to top of log
         activityLog.insertBefore(activityItem, activityLog.firstChild);
 
-        // Store in memory for export
+        // Store in data array for export
         this.activityLogData.unshift({
             time: now.toISOString(),
             message: message,
             type: type
         });
 
-        // Keep only last 100 items in memory
-        if (this.activityLogData.length > 100) {
-            this.activityLogData.pop();
-        }
-
-        // Keep only last 10 items displayed
-        while (activityLog.children.length > 10) {
+        // Limit log to 20 items in display
+        while (activityLog.children.length > 20) {
             activityLog.removeChild(activityLog.lastChild);
         }
+    }
+
+    clearActivityLog() {
+        const activityLog = document.getElementById('activityLog');
+        activityLog.innerHTML = '';
+        this.activityLogData = [];
+        this.logActivity('Activity log cleared', 'info');
     }
 
     // ===== EXPORT FUNCTIONS =====
     exportToJSON() {
         const data = {
-            timestamp: new Date().toISOString(),
-            uptime: this.getUptimeSeconds(),
             stats: this.stats,
-            expression: this.currentExpression,
-            activityLog: this.activityLogData
+            uptime: new Date().toISOString(),
+            expressions: this.expressions,
+            activityLog: this.activityLogData,
+            commandHistory: this.commandHistory
         };
 
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-        this.downloadFile(blob, 'clawdbot-stats.json');
-
-        this.logActivity('Exported stats to JSON', 'info');
+        this.downloadFile(blob, 'clawdbot-dashboard.json');
+        this.logActivity('Exported to JSON', 'info');
     }
 
     exportToCSV() {
-        // Create CSV header
-        let csv = 'Time,Type,Message\n';
+        const csvHeaders = 'Time,Message,Type\n';
+        const csvData = this.activityLogData.map(item => 
+            `${item.time},"${item.message}",${item.type}`
+        ).join('\n');
 
-        // Add activity log data
-        this.activityLogData.forEach(item => {
-            const time = new Date(item.time).toLocaleString();
-            const message = `"${item.message.replace(/"/g, '""')}"`; // Escape quotes
-            csv += `${time},${item.type},${message}\n`;
-        });
-
-        const blob = new Blob([csv], { type: 'text/csv' });
+        const blob = new Blob([csvHeaders + csvData], { type: 'text/csv' });
         this.downloadFile(blob, 'clawdbot-activity.csv');
+        this.logActivity('Exported to CSV', 'info');
+    }
 
-        this.logActivity('Exported activity to CSV', 'info');
+    exportToPNG() {
+        // Use html2canvas if available, otherwise create simple download
+        const dashboard = document.querySelector('.container');
+        
+        // Try to use html2canvas library
+        if (typeof html2canvas !== 'undefined') {
+            html2canvas(dashboard).then(canvas => {
+                canvas.toBlob(blob => {
+                    this.downloadFile(blob, 'clawdbot-screenshot.png');
+                });
+            });
+        } else {
+            this.logActivity('html2canvas library required for PNG export', 'warning');
+            alert('PNG export requires html2canvas library');
+        }
     }
 
     downloadFile(blob, filename) {
@@ -310,45 +522,30 @@ class ClawdbotDashboard {
         URL.revokeObjectURL(url);
     }
 
-    getUptimeSeconds() {
-        const now = new Date();
-        return Math.floor((now - this.startTime) / 1000);
+    // ===== EXPRESSION CYCLING =====
+    nextExpression() {
+        this.currentExpressionIndex = (this.currentExpressionIndex + 1) % this.expressions.length;
+        this.logActivity(`Previewing: ${this.expressions[this.currentExpressionIndex].toUpperCase()}`, 'info');
     }
 
-    // ===== ACTIVITY SIMULATION =====
-    startActivitySimulation() {
-        const activities = [
-            'Received new command',
-            'Processing webhook',
-            'Updating database',
-            'Sending notification',
-            'Running scheduled task',
-            'Checking system health',
-            'Syncing with remote',
-            'Executing script',
-            'Parsing user input',
-            'Generating response'
-        ];
-
-        setInterval(() => {
-            const randomActivity = activities[Math.floor(Math.random() * activities.length)];
-            this.logActivity(randomActivity, 'activity');
-        }, 8000);
+    previousExpression() {
+        this.currentExpressionIndex = (this.currentExpressionIndex - 1 + this.expressions.length) % this.expressions.length;
+        this.logActivity(`Previewing: ${this.expressions[this.currentExpressionIndex].toUpperCase()}`, 'info');
     }
 
     // ===== RANDOM EXPRESSION CHANGES =====
     startRandomExpressionChanges() {
         setInterval(() => {
-            // Only change randomly if current expression is idle
             if (this.currentExpression === 'idle') {
-                const expressions = ['happy', 'thinking'];
-                const randomExpression = expressions[Math.floor(Math.random() * expressions.length)];
-
-                this.setExpression(randomExpression);
-
-                // Return to idle after a short delay
+                const randomExpressions = ['happy', 'thinking', 'confused'];
+                const randomExpr = randomExpressions[Math.floor(Math.random() * randomExpressions.length)];
+                this.setExpression(randomExpr);
+                
+                // Reset to idle after 3 seconds
                 setTimeout(() => {
-                    this.setExpression('idle');
+                    if (this.currentExpression === randomExpr) {
+                        this.setExpression('idle');
+                    }
                 }, 3000);
             }
         }, 15000);

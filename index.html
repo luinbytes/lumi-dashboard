@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clawdbot Dashboard 🦞</title>
+    <title>Clawdbot Dashboard v2.0 🦞</title>
     <link rel="stylesheet" href="styles.css">
-    <meta name="description" content="Interactive Clawdbot dashboard with space lobster theme. Features real-time stats, activity log, and expressive lobster face.">
+    <meta name="description" content="Interactive Clawdbot dashboard v2.0 with space lobster theme. Features real-time stats, activity log, command input, and expressive lobster face.">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-KyZUjC+H9wGQ8C3M4QoR5Pb5V8uWjCJ8n4j3J8cL5wU3wUQhYmUo" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="stars"></div>
@@ -15,12 +16,17 @@
             <div class="header-content">
                 <h1 class="title">
                     <span class="title-lobster">🦞</span>
-                    Clawdbot
+                    Clawdbot v2.0
                     <span class="title-lobster">🦞</span>
                 </h1>
-                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
-                    <span class="theme-icon">🌙</span>
-                </button>
+                <div class="header-controls">
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                    <button class="sound-toggle" id="soundToggle" aria-label="Toggle sound effects">
+                        <span>🔇</span>
+                    </button>
+                </div>
             </div>
             <p class="subtitle">Space Lobbot Control Panel</p>
         </header>
@@ -75,7 +81,36 @@
                     <button class="btn" data-expression="thinking" aria-label="Set expression to thinking">🤔 Thinking</button>
                     <button class="btn" data-expression="working" aria-label="Set expression to working">⚡ Working</button>
                     <button class="btn" data-expression="error" aria-label="Set expression to error">❌ Error</button>
+                    <button class="btn" data-expression="excited" aria-label="Set expression to excited">🎉 Excited</button>
+                    <button class="btn" data-expression="confused" aria-label="Set expression to confused">😕 Confused</button>
+                    <button class="btn" data-expression="sleeping" aria-label="Set expression to sleeping">💤 Sleeping</button>
                 </div>
+
+                <!-- Animation Speed Controls -->
+                <div class="speed-controls" aria-label="Animation speed controls">
+                    <button class="btn-small" id="speedDown" aria-label="Decrease animation speed">🐢</button>
+                    <span class="speed-display" id="speedDisplay">100%</span>
+                    <button class="btn-small" id="speedUp" aria-label="Increase animation speed">🚀</button>
+                </div>
+            </section>
+
+            <!-- Command Input -->
+            <section class="command-section" aria-label="Command input">
+                <h2 class="section-title">💬 Send Command</h2>
+                <div class="command-input-wrapper">
+                    <input 
+                        type="text" 
+                        id="commandInput" 
+                        class="command-input" 
+                        placeholder="Type a command... (e.g., help, status, sleep, dance)"
+                        aria-label="Command input field. Press Enter to send, Arrow Up/Down for history."
+                        autocomplete="off"
+                    >
+                    <button class="btn-primary" id="sendCommand" aria-label="Send command">
+                        Send ➤
+                    </button>
+                </div>
+                <p class="command-hint">↑↓ for history • Enter to send • Try: help, status, sleep, dance</p>
             </section>
 
             <!-- Stats Cards -->
@@ -101,6 +136,16 @@
                         <div class="stat-value" id="commands">0</div>
                         <div class="stat-label">Commands</div>
                     </div>
+                    <div class="stat-card" aria-label="Errors statistic">
+                        <div class="stat-icon">❌</div>
+                        <div class="stat-value" id="errors">0</div>
+                        <div class="stat-label">Errors</div>
+                    </div>
+                    <div class="stat-card" aria-label="Responses statistic">
+                        <div class="stat-icon">💬</div>
+                        <div class="stat-value" id="responses">0</div>
+                        <div class="stat-label">Responses</div>
+                    </div>
                 </div>
             </section>
 
@@ -111,12 +156,15 @@
                     <div class="export-buttons">
                         <button class="btn-small" id="exportJSON" aria-label="Export stats to JSON">📄 JSON</button>
                         <button class="btn-small" id="exportCSV" aria-label="Export activity to CSV">📊 CSV</button>
+                        <button class="btn-small" id="exportPNG" aria-label="Export dashboard screenshot">📷 PNG</button>
+                        <button class="btn-small" id="clearLog" aria-label="Clear activity log">🗑️ Clear</button>
                     </div>
                 </div>
                 <div class="activity-log" id="activityLog" role="log" aria-live="polite" aria-label="Recent system activity log">
                     <div class="activity-item">
                         <span class="activity-time">00:00:00</span>
                         <span class="activity-message">System initialized</span>
+                        <span class="activity-type">info</span>
                     </div>
                 </div>
             </section>
@@ -130,7 +178,11 @@
 
         <!-- Footer -->
         <footer>
-            <p>Built with 🦞 and cosmic energy</p>
+            <p>Built with 🦞 and cosmic energy v2.0</p>
+            <p class="footer-links">
+                <a href="#" id="shortcutHelp">Keyboard Shortcuts</a> • 
+                <a href="#" id="changelog">Changelog</a>
+            </p>
         </footer>
     </div>
 

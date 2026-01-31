@@ -796,3 +796,209 @@ footer {
         width: 100%;
     }
 }
+
+/* ===== NEW STYLES V2.0 ===== */
+
+/* Sound Toggle Button */
+.sound-toggle {
+    position: absolute;
+    right: 50px;
+    background: var(--card-bg);
+    border: 2px solid var(--card-border);
+    color: var(--text-primary);
+    padding: 10px 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    transition: all 0.3s ease;
+}
+
+.sound-toggle:hover {
+    background: var(--secondary-orange);
+    transform: scale(1.1);
+}
+
+.sound-toggle:focus {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 2px;
+}
+
+/* Speed Controls */
+.speed-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.speed-display {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--text-primary);
+    min-width: 50px;
+    text-align: center;
+}
+
+/* Command Section */
+.command-section {
+    background: var(--card-bg);
+    border: 2px solid var(--card-border);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.command-input-wrapper {
+    display: flex;
+    gap: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.command-input {
+    flex: 1;
+    padding: 12px 15px;
+    font-size: 16px;
+    background: var(--dark-bg);
+    border: 2px solid var(--card-border);
+    border-radius: 8px;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.command-input:focus {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 2px;
+    border-color: var(--focus-ring);
+}
+
+.command-hint {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    opacity: 0.8;
+}
+
+/* Additional Expression Styles */
+.face-container.excited {
+    animation: bounce 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.face-container.confused {
+    animation: tilt 1s ease-in-out infinite alternate;
+}
+
+@keyframes tilt {
+    0%, 100% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+}
+
+.face-container.sleeping {
+    opacity: 0.7;
+    animation: sleep 3s ease-in-out infinite;
+}
+
+@keyframes sleep {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(0.98); }
+}
+
+.face-container.sleeping .eye {
+    height: 15px;
+    animation: blink 4s ease-in-out infinite;
+}
+
+/* Activity Types */
+.activity-type {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-left: 10px;
+}
+
+.activity-item.type-info .activity-type {
+    background: var(--thinking);
+    color: white;
+}
+
+.activity-item.type-command .activity-type {
+    background: var(--working);
+    color: white;
+}
+
+.activity-item.type-response .activity-type {
+    background: var(--success);
+    color: white;
+}
+
+.activity-item.type-warning .activity-type {
+    background: var(--secondary-orange);
+    color: white;
+}
+
+/* Animation Speed CSS Variable */
+:root {
+    --anim-speed: 1;
+}
+
+/* Apply animation speed to animations */
+@keyframes blink {
+    0%, 45%, 55%, 100% { transform: scaleY(1); }
+    50% { transform: scaleY(0.1); }
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Footer Links */
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.footer-links a {
+    color: var(--secondary-orange);
+    text-decoration: none;
+    font-size: 14px;
+    transition: opacity 0.3s ease;
+}
+
+.footer-links a:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    .expression-controls {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .command-input-wrapper {
+        flex-direction: column;
+    }
+    
+    .header-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
