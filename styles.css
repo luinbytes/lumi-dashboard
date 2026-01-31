@@ -503,11 +503,49 @@ header {
     margin-bottom: 40px;
 }
 
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
 .section-title {
     font-size: 1.5rem;
-    margin-bottom: 20px;
     color: var(--primary-orange);
     font-weight: 700;
+    margin: 0;
+}
+
+.export-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-small {
+    background: rgba(255, 107, 53, 0.2);
+    border: 2px solid var(--primary-orange);
+    color: var(--text-primary);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.btn-small:hover {
+    background: var(--primary-orange);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+}
+
+.btn-small:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 .activity-log {

@@ -106,7 +106,13 @@
 
             <!-- Activity Log -->
             <section class="activity-section" aria-label="Activity log">
-                <h2 class="section-title">🚀 Recent Activity</h2>
+                <div class="section-header">
+                    <h2 class="section-title">🚀 Recent Activity</h2>
+                    <div class="export-buttons">
+                        <button class="btn-small" id="exportJSON" aria-label="Export stats to JSON">📄 JSON</button>
+                        <button class="btn-small" id="exportCSV" aria-label="Export activity to CSV">📊 CSV</button>
+                    </div>
+                </div>
                 <div class="activity-log" id="activityLog" role="log" aria-live="polite" aria-label="Recent system activity log">
                     <div class="activity-item">
                         <span class="activity-time">00:00:00</span>
