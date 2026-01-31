@@ -9,11 +9,16 @@ class ClawdbotDashboard {
             activity: 156,
             commands: 89
         };
+        this.expressions = ['idle', 'happy', 'thinking', 'working', 'error'];
+        this.currentExpressionIndex = 0;
         this.init();
     }
 
     init() {
         this.setupExpressionControls();
+        this.setupKeyboardNavigation();
+        this.setupThemeToggle();
+        this.loadSavedTheme();
         this.startUptimeCounter();
         this.startActivitySimulation();
         this.updateStats();
@@ -32,6 +37,80 @@ class ClawdbotDashboard {
         });
     }
 
+    // ===== KEYBOARD NAVIGATION =====
+    setupKeyboardNavigation() {
+        const faceContainer = document.getElementById('faceContainer');
+
+        faceContainer.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'ArrowRight':
+                    e.preventDefault();
+                    this.nextExpression();
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    this.previousExpression();
+                    break;
+                case 'Enter':
+                case ' ':
+                    e.preventDefault();
+                    this.setExpression(this.expressions[this.currentExpressionIndex]);
+                    break;
+            }
+        });
+    }
+
+    nextExpression() {
+        this.currentExpressionIndex = (this.currentExpressionIndex + 1) % this.expressions.length;
+        this.logActivity(`Previewing: ${this.expressions[this.currentExpressionIndex].toUpperCase()}`, 'info');
+    }
+
+    previousExpression() {
+        this.currentExpressionIndex = (this.currentExpressionIndex - 1 + this.expressions.length) % this.expressions.length;
+        this.logActivity(`Previewing: ${this.expressions[this.currentExpressionIndex].toUpperCase()}`, 'info');
+    }
+
+    // ===== THEME TOGGLE =====
+    setupThemeToggle() {
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            this.toggleTheme();
+        });
+
+        // Keyboard support for theme toggle
+        themeToggle.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                this.toggleTheme();
+            }
+        });
+    }
+
+    toggleTheme() {
+        const body = document.body;
+        const themeIcon = document.querySelector('.theme-icon');
+
+        body.classList.toggle('light-mode');
+
+        const isLightMode = body.classList.contains('light-mode');
+        themeIcon.textContent = isLightMode ? '☀️' : '🌙';
+
+        // Save preference to localStorage
+        localStorage.setItem('clawdbot-theme', isLightMode ? 'light' : 'dark');
+
+        this.logActivity(`Theme changed to ${isLightMode ? 'light' : 'dark'} mode`, 'info');
+    }
+
+    loadSavedTheme() {
+        const savedTheme = localStorage.getItem('clawdbot-theme');
+        const themeIcon = document.querySelector('.theme-icon');
+
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeIcon.textContent = '☀️';
+        }
+    }
+
     setExpression(expression) {
         const faceContainer = document.getElementById('faceContainer');
         const statusLabel = document.getElementById('statusLabel');
@@ -44,6 +123,9 @@ class ClawdbotDashboard {
         // Add new expression class
         faceContainer.classList.add(expression);
         this.currentExpression = expression;
+
+        // Update expression index for keyboard navigation
+        this.currentExpressionIndex = this.expressions.indexOf(expression);
 
         // Update status label
         const labels = {
