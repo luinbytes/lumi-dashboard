@@ -11,6 +11,7 @@ class ClawdbotDashboard {
         };
         this.expressions = ['idle', 'happy', 'thinking', 'working', 'error'];
         this.currentExpressionIndex = 0;
+        this.activityLogData = []; // Store all activity for export
         this.init();
     }
 
@@ -18,6 +19,7 @@ class ClawdbotDashboard {
         this.setupExpressionControls();
         this.setupKeyboardNavigation();
         this.setupThemeToggle();
+        this.setupExportButtons();
         this.loadSavedTheme();
         this.startUptimeCounter();
         this.startActivitySimulation();
@@ -39,6 +41,40 @@ class ClawdbotDashboard {
 
     // ===== KEYBOARD NAVIGATION =====
     setupKeyboardNavigation() {
+        const faceContainer = document.getElementById('faceContainer');
+
+        faceContainer.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'ArrowRight':
+                    e.preventDefault();
+                    this.nextExpression();
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    this.previousExpression();
+                    break;
+                case 'Enter':
+                case ' ':
+                    e.preventDefault();
+                    this.setExpression(this.expressions[this.currentExpressionIndex]);
+                    break;
+            }
+        });
+    }
+
+    // ===== EXPORT BUTTONS =====
+    setupExportButtons() {
+        document.getElementById('exportJSON').addEventListener('click', () => {
+            this.exportToJSON();
+        });
+
+        document.getElementById('exportCSV').addEventListener('click', () => {
+            this.exportToCSV();
+        });
+    }
+
+    // ===== EXPRESSION CONTROLS =====
+    setupExpressionControls() {
         const faceContainer = document.getElementById('faceContainer');
 
         faceContainer.addEventListener('keydown', (e) => {
@@ -212,10 +248,71 @@ class ClawdbotDashboard {
         // Add to top of log
         activityLog.insertBefore(activityItem, activityLog.firstChild);
 
-        // Keep only last 10 items
+        // Store in memory for export
+        this.activityLogData.unshift({
+            time: now.toISOString(),
+            message: message,
+            type: type
+        });
+
+        // Keep only last 100 items in memory
+        if (this.activityLogData.length > 100) {
+            this.activityLogData.pop();
+        }
+
+        // Keep only last 10 items displayed
         while (activityLog.children.length > 10) {
             activityLog.removeChild(activityLog.lastChild);
         }
+    }
+
+    // ===== EXPORT FUNCTIONS =====
+    exportToJSON() {
+        const data = {
+            timestamp: new Date().toISOString(),
+            uptime: this.getUptimeSeconds(),
+            stats: this.stats,
+            expression: this.currentExpression,
+            activityLog: this.activityLogData
+        };
+
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        this.downloadFile(blob, 'clawdbot-stats.json');
+
+        this.logActivity('Exported stats to JSON', 'info');
+    }
+
+    exportToCSV() {
+        // Create CSV header
+        let csv = 'Time,Type,Message\n';
+
+        // Add activity log data
+        this.activityLogData.forEach(item => {
+            const time = new Date(item.time).toLocaleString();
+            const message = `"${item.message.replace(/"/g, '""')}"`; // Escape quotes
+            csv += `${time},${item.type},${message}\n`;
+        });
+
+        const blob = new Blob([csv], { type: 'text/csv' });
+        this.downloadFile(blob, 'clawdbot-activity.csv');
+
+        this.logActivity('Exported activity to CSV', 'info');
+    }
+
+    downloadFile(blob, filename) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    getUptimeSeconds() {
+        const now = new Date();
+        return Math.floor((now - this.startTime) / 1000);
     }
 
     // ===== ACTIVITY SIMULATION =====
