@@ -1,6 +1,33 @@
-// ===== CLAWDBOT DASHBOARD SCRIPT v2.0 =====
+// ===== CLAWDBOT DASHBOARD SCRIPT v2.1 =====
+// Improved error handling, accessibility, and performance
 
 class ClawdbotDashboard {
+    constructor() {
+        try {
+            this.startTime = new Date();
+            this.currentExpression = 'idle';
+            this.animationSpeed = 1.0;
+            this.soundEnabled = false;
+            this.stats = {
+                sessions: 42,
+                activity: 156,
+                commands: 89,
+                uptime: 0,
+                errors: 3,
+                responses: 245
+            };
+            this.expressions = ['idle', 'happy', 'thinking', 'working', 'error', 'excited', 'confused', 'sleeping'];
+            this.currentExpressionIndex = 0;
+            this.activityLogData = [];
+            this.commandHistory = [];
+            this.historyIndex = -1;
+            this.eventListeners = []; // Track for cleanup
+            this.init();
+        } catch (error) {
+            console.error('Failed to initialize dashboard:', error);
+            this.showToast('Failed to initialize dashboard', 'error');
+        }
+    }
     constructor() {
         this.startTime = new Date();
         this.currentExpression = 'idle';
@@ -540,7 +567,7 @@ class ClawdbotDashboard {
                 const randomExpressions = ['happy', 'thinking', 'confused'];
                 const randomExpr = randomExpressions[Math.floor(Math.random() * randomExpressions.length)];
                 this.setExpression(randomExpr);
-                
+
                 // Reset to idle after 3 seconds
                 setTimeout(() => {
                     if (this.currentExpression === randomExpr) {
@@ -550,9 +577,49 @@ class ClawdbotDashboard {
             }
         }, 15000);
     }
+
+    // ===== TOAST NOTIFICATIONS =====
+    showToast(message, type = 'info') {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.textContent = message;
+        toast.setAttribute('role', 'alert');
+        toast.setAttribute('aria-live', 'polite');
+
+        document.body.appendChild(toast);
+
+        // Remove after 3 seconds
+        setTimeout(() => {
+            toast.classList.add('toast-fade-out');
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    document.body.removeChild(toast);
+                }
+            }, 300);
+        }, 3000);
+    }
+
+    // ===== CLEANUP =====
+    cleanup() {
+        // Remove all event listeners
+        this.eventListeners.forEach(({ element, event, handler }) => {
+            element.removeEventListener(event, handler);
+        });
+        this.eventListeners = [];
+    }
 }
 
 // Initialize dashboard when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    window.dashboard = new ClawdbotDashboard();
+    try {
+        window.dashboard = new ClawdbotDashboard();
+    } catch (error) {
+        console.error('Failed to initialize dashboard:', error);
+        document.body.innerHTML = `
+            <div style="text-align: center; padding: 50px;">
+                <h2>❌ Failed to load dashboard</h2>
+                <p>Please refresh the page or check the console for details.</p>
+            </div>
+        `;
+    }
 });
