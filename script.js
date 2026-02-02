@@ -434,24 +434,84 @@ class LumiDashboard {
     }
 
     // ===== STATS UPDATES =====
+    async fetchRealStats() {
+        try {
+            const response = await fetch('/api/status');
+            if (response.ok) {
+                const data = await response.json();
+                this.updateRealStats(data);
+            }
+        } catch (error) {
+            console.log('Could not fetch real stats:', error);
+        }
+    }
+
+    updateRealStats(data) {
+        // Update stats from API
+        this.stats.uptime = data.uptime_seconds;
+        this.stats.activity = data.activity_count;
+
+        // Use session stats if available
+        if (data.status) {
+            this.stats.sessions = data.status.tasks_completed || 1;
+            this.stats.commands = data.status.commits_made || 0;
+            this.stats.responses = data.status.prs_created || 0;
+            this.stats.errors = data.status.issues_found || 0;
+
+            // Update current task display
+            this.updateCurrentTask(data.status);
+        }
+
+        // Update GitHub stats
+        if (data.github) {
+            this.updateGitHubStats(data.github);
+        }
+    }
+
+    updateCurrentTask(status) {
+        const taskElement = document.getElementById('currentTask');
+        const positionElement = document.getElementById('queuePosition');
+
+        if (taskElement && status.current_task) {
+            taskElement.textContent = status.current_task;
+            taskElement.title = `Current task in overnight worker`;
+        }
+
+        if (positionElement && status.queue_position) {
+            positionElement.textContent = status.queue_position;
+        }
+    }
+
+    updateGitHubStats(github) {
+        const prsElement = document.getElementById('openPRs');
+        const reposElement = document.getElementById('reposTracked');
+
+        if (prsElement) {
+            prsElement.textContent = github.open_prs || 0;
+        }
+
+        if (reposElement) {
+            reposElement.textContent = github.repos_tracked || 0;
+        }
+    }
+
     updateStats() {
         document.getElementById('sessions').textContent = this.stats.sessions;
         document.getElementById('activity').textContent = this.stats.activity;
         document.getElementById('commands').textContent = this.stats.commands;
-        
+
         // Update additional stats if elements exist
         const errorsElement = document.getElementById('errors');
         const responsesElement = document.getElementById('responses');
         if (errorsElement) errorsElement.textContent = this.stats.errors;
         if (responsesElement) responsesElement.textContent = this.stats.responses;
 
-        // Simulate stats updates
+        // Fetch real stats and set up auto-refresh
+        this.fetchRealStats();
         setInterval(() => {
-            this.stats.activity += Math.floor(Math.random() * 3);
-            if (document.getElementById('activity')) {
-                document.getElementById('activity').textContent = this.stats.activity;
-            }
-        }, 5000);
+            this.fetchRealStats();
+            this.updateUptime();
+        }, 10000); // Update every 10 seconds
     }
 
     // ===== ACTIVITY LOG =====
