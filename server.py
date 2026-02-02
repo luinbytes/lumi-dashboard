@@ -17,11 +17,10 @@ DASHBOARD_DIR = Path.home() / ".openclaw" / "workspace" / "lumi-dashboard"
 STATUS_FILE = DASHBOARD_DIR / "status.json"
 WORKSPACE_DIR = Path.home() / ".openclaw" / "workspace"
 
-# Mock agent data (in real deployment, this would query OpenClaw)
+# Agent data (single main agent for now)
+# TODO: Integrate with OpenClaw to get real agent list
 AGENTS = [
-    {"id": "main", "name": "main", "online": True, "skills": 12},
-    {"id": "sub-agent-1", "name": "research", "online": True, "skills": 8},
-    {"id": "sub-agent-2", "name": "coding", "online": False, "skills": 5},
+    {"id": "main", "name": "Lumi", "online": True, "skills": 12},
 ]
 
 def get_status():
@@ -49,8 +48,11 @@ def get_agent_file(agent_id, filename):
     # Map agent IDs to workspace files
     agent_files = {
         "main": {
-            "Soul.md": "SOUL.md",
-            "MEMORY.md": "MEMORY.md"
+            "SOUL.md": "SOUL.md",
+            "MEMORY.md": "MEMORY.md",
+            "USER.md": "USER.md",
+            "IDENTITY.md": "IDENTITY.md",
+            "TOOLS.md": "TOOLS.md",
         }
     }
 
@@ -75,8 +77,11 @@ def save_agent_file(agent_id, filename, content):
     """Save file content to workspace"""
     agent_files = {
         "main": {
-            "Soul.md": "SOUL.md",
-            "MEMORY.md": "MEMORY.md"
+            "SOUL.md": "SOUL.md",
+            "MEMORY.md": "MEMORY.md",
+            "USER.md": "USER.md",
+            "IDENTITY.md": "IDENTITY.md",
+            "TOOLS.md": "TOOLS.md",
         }
     }
 
