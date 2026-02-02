@@ -7,5 +7,4 @@
  * Running on http://127.0.0.1:5000
  * Running on http://172.31.40.252:5000
 [33mPress CTRL+C to quit[0m
-127.0.0.1 - - [02/Feb/2026 23:36:21] "GET /api/flowchart HTTP/1.1" 200 -
-127.0.0.1 - - [02/Feb/2026 23:36:24] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [02/Feb/2026 23:38:41] "GET /api/flowchart HTTP/1.1" 200 -
