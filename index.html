@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumi Behavior Flow Dashboard 🦞</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="title">🦞 Lumi Behavior Flow Dashboard</h1>
+            <p class="subtitle">Dynamic behavioral rule analysis</p>
+        </header>
+
+        <nav class="nav-bar" role="navigation" aria-label="Dashboard navigation">
+            <button class="nav-btn active" data-view="dashboard" aria-label="Dashboard view">
+                📊 Dashboard
+            </button>
+            <button class="nav-btn" data-view="flow" aria-label="Behavior flow view">
+                🧠 Behavior Flow
+            </button>
+        </nav>
+
+        <main id="dashboardView">
+            <section class="stats-section">
+                <h2 class="section-title">📊 Quick Stats</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📄</div>
+                        <div class="stat-value" id="filesCount">-</div>
+                        <div class="stat-label">Files</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⏰</div>
+                        <div class="stat-value" id="timeRulesCount">-</div>
+                        <div class="stat-label">Time Rules</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🔄</div>
+                        <div class="stat-value" id="modeSwitchesCount">-</div>
+                        <div class="stat-label">Mode Switches</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⚠️</div>
+                        <div class="stat-value" id="criticalRulesCount">-</div>
+                        <div class="stat-label">Critical Rules</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🔀</div>
+                        <div class="stat-value" id="workflowsCount">-</div>
+                        <div class="stat-label">Workflows</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🔐</div>
+                        <div class="stat-value" id="permissionGatesCount">-</div>
+                        <div class="stat-label">Permission Gates</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="actions-section">
+                <h2 class="section-title">⚡ Actions</h2>
+                <div class="actions-grid">
+                    <button class="action-btn" id="refreshFlowBtn">
+                        🔄 Refresh Flow Chart
+                    </button>
+                    <button class="action-btn" id="loadAdminBtn">
+                        🎛️ Open Admin Panel
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <main id="flowView" class="hidden">
+            <section class="flow-section">
+                <div class="section-header">
+                    <h2 class="section-title">🧠 Behavior Flow Chart</h2>
+                    <button class="btn-small" id="refreshFlow2">🔄 Refresh</button>
+                </div>
+
+                <div class="flowchart-container">
+                    <h3 class="subsection-title">Decision Tree</h3>
+                    <div id="mermaidChart" class="mermaid">
+                        Loading flow chart...
+                    </div>
+                </div>
+
+                <div class="rules-list">
+                    <h3 class="subsection-title">Extracted Rules</h3>
+                    <div class="tabs" role="tablist" aria-label="Rule type tabs">
+                        <button class="tab-btn active" data-tab="time" role="tab" aria-selected="true">Time Rules</button>
+                        <button class="tab-btn" data-tab="mode" role="tab" aria-selected="false">Mode Switches</button>
+                        <button class="tab-btn" data-tab="workflow" role="tab" aria-selected="false">Workflows</button>
+                        <button class="tab-btn" data-tab="critical" role="tab" aria-selected="false">Critical</button>
+                        <button class="tab-btn" data-tab="permission" role="tab" aria-selected="false">Permissions</button>
+                    </div>
+                    <div id="rulesContent" class="rules-content">
+                        Loading rules...
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Built with 🦞 and cosmic energy</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
