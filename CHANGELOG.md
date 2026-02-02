@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Clawdbot Webpanel will be documented in this file.
+All notable changes to Lumi Webpanel will be documented in this file.
 
 ## [Unreleased]
 

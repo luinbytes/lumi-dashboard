@@ -1,11 +1,11 @@
-# 🦞 Clawdbot Webpanel v2.0
+# 🦞 Lumi Webpanel v2.0
 
-A fun, interactive dashboard for Clawdbot with a space lobster theme! Now v2.0 with command input, sound effects, and more!
+A fun, interactive dashboard for Lumi with a space lobster theme! Now v2.0 with command input, sound effects, and more!
 
 ## v2.0 New Features ✨
 
 ### Command Input 💬
-- **Real-time Commands** - Send commands to Clawdbot
+- **Real-time Commands** - Send commands to Lumi
 - **Command History** - Navigate history with Arrow Up/Down
 - **Auto-responses** - Pre-programmed responses for common commands
 - **Smart detection** - Commands like "help", "sleep", "dance" trigger special reactions
@@ -86,19 +86,19 @@ A fun, interactive dashboard for Clawdbot with a space lobster theme! Now v2.0 w
 
 ### Option 1: Python (Recommended)
 ```bash
-cd clawdbot-webpanel
+cd lumi-dashboard
 python3 -m http.server 8080
 ```
 
 ### Option 2: Node.js
 ```bash
-cd clawdbot-webpanel
+cd lumi-dashboard
 npx serve
 ```
 
 ### Option 3: PHP
 ```bash
-cd clawdbot-webpanel
+cd lumi-dashboard
 php -S localhost:8080
 ```
 
@@ -181,7 +181,7 @@ Captures a screenshot of the current dashboard state. Requires `html2canvas` lib
 ## File Structure
 
 ```
-clawdbot-webpanel/
+lumi-dashboard/
 ├── index.html    # Main HTML structure (v2.0)
 ├── styles.css    # All styles and animations
 ├── script.js     # Interactive logic (v2.0)
@@ -245,7 +245,7 @@ Works in all modern browsers:
 
 ## Ideas for Future Enhancements
 
-- [ ] Real WebSocket connection to actual Clawdbot
+- [ ] Real WebSocket connection to actual Lumi
 - [ ] Sound effects library (different beeps, chirps)
 - [ ] Custom expression builder UI
 - [ ] Notification system integration

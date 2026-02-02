@@ -1,8 +1,8 @@
-# 🦞 Clawdbot Face Expressions Guide
+# 🦞 Lumi Face Expressions Guide
 
 ## Expression Overview
 
-The Clawdbot dashboard features an interactive lobster face with 5 unique expressions. Each expression changes the face's appearance, animations, and status color.
+The Lumi dashboard features an interactive lobster face with 5 unique expressions. Each expression changes the face's appearance, animations, and status color.
 
 ---
 
@@ -124,7 +124,7 @@ Alarmed, distressed, something's wrong
 ## UI Elements
 
 ### Header
-- **Title:** "🦞 Clawdbot 🦞" with floating animation
+- **Title:** "🦞 Lumi 🦞" with floating animation
 - **Subtitle:** "Space Lobbot Control Panel"
 - **Animation:** Float up/down 10px (3s loop)
 

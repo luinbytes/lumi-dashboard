@@ -1,7 +1,7 @@
-// ===== CLAWDBOT DASHBOARD SCRIPT v2.1 =====
+// ===== LUMI DASHBOARD SCRIPT v2.1 =====
 // Improved error handling, accessibility, and performance
 
-class ClawdbotDashboard {
+class LumiDashboard {
     constructor() {
         try {
             this.startTime = new Date();
@@ -235,7 +235,7 @@ class ClawdbotDashboard {
 
     toggleSound() {
         this.soundEnabled = !this.soundEnabled;
-        localStorage.setItem('clawdbot-sound', this.soundEnabled ? 'enabled' : 'disabled');
+        localStorage.setItem('lumi-sound', this.soundEnabled ? 'enabled' : 'disabled');
         this.logActivity(`Sound ${this.soundEnabled ? 'enabled' : 'disabled'}`, 'info');
         this.updateSoundToggleUI();
     }
@@ -295,7 +295,7 @@ class ClawdbotDashboard {
             // Update CSS variable for animation speed
             document.documentElement.style.setProperty('--anim-speed', (1 / this.animationSpeed).toString());
         }
-        localStorage.setItem('clawdbot-speed', this.animationSpeed.toString());
+        localStorage.setItem('lumi-speed', this.animationSpeed.toString());
     }
 
     // ===== THEME TOGGLE =====
@@ -322,12 +322,12 @@ class ClawdbotDashboard {
         const isLightMode = body.classList.contains('light-mode');
         themeIcon.textContent = isLightMode ? '☀️' : '🌙';
 
-        localStorage.setItem('clawdbot-theme', isLightMode ? 'light' : 'dark');
+        localStorage.setItem('lumi-theme', isLightMode ? 'light' : 'dark');
         this.logActivity(`Theme changed to ${isLightMode ? 'light' : 'dark'} mode`, 'info');
     }
 
     loadSavedTheme() {
-        const savedTheme = localStorage.getItem('clawdbot-theme');
+        const savedTheme = localStorage.getItem('lumi-theme');
         const themeIcon = document.querySelector('.theme-icon');
 
         if (savedTheme === 'light') {
@@ -338,13 +338,13 @@ class ClawdbotDashboard {
 
     loadSavedSettings() {
         // Load sound setting
-        const savedSound = localStorage.getItem('clawdbot-sound');
+        const savedSound = localStorage.getItem('lumi-sound');
         if (savedSound === 'enabled') {
             this.soundEnabled = true;
         }
 
         // Load animation speed
-        const savedSpeed = localStorage.getItem('clawdbot-speed');
+        const savedSpeed = localStorage.getItem('lumi-speed');
         if (savedSpeed) {
             this.animationSpeed = parseFloat(savedSpeed);
             this.updateSpeedDisplay();
@@ -506,7 +506,7 @@ class ClawdbotDashboard {
         };
 
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-        this.downloadFile(blob, 'clawdbot-dashboard.json');
+        this.downloadFile(blob, 'lumi-dashboard.json');
         this.logActivity('Exported to JSON', 'info');
     }
 
@@ -517,7 +517,7 @@ class ClawdbotDashboard {
         ).join('\n');
 
         const blob = new Blob([csvHeaders + csvData], { type: 'text/csv' });
-        this.downloadFile(blob, 'clawdbot-activity.csv');
+        this.downloadFile(blob, 'lumi-activity.csv');
         this.logActivity('Exported to CSV', 'info');
     }
 
@@ -529,7 +529,7 @@ class ClawdbotDashboard {
         if (typeof html2canvas !== 'undefined') {
             html2canvas(dashboard).then(canvas => {
                 canvas.toBlob(blob => {
-                    this.downloadFile(blob, 'clawdbot-screenshot.png');
+                    this.downloadFile(blob, 'lumi-screenshot.png');
                 });
             });
         } else {
@@ -612,7 +612,7 @@ class ClawdbotDashboard {
 // Initialize dashboard when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     try {
-        window.dashboard = new ClawdbotDashboard();
+        window.dashboard = new LumiDashboard();
     } catch (error) {
         console.error('Failed to initialize dashboard:', error);
         document.body.innerHTML = `
