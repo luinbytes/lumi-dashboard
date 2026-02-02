@@ -16,6 +16,9 @@ from urllib.parse import urlparse, parse_qs
 DASHBOARD_DIR = Path.home() / ".openclaw" / "workspace" / "lumi-dashboard"
 STATUS_FILE = DASHBOARD_DIR / "status.json"
 WORKSPACE_DIR = Path.home() / ".openclaw" / "workspace"
+OPENCLAW_CONFIG = Path.home() / ".openclaw" / "openclaw.json"
+BUILTIN_SKILLS_DIR = Path.home() / ".npm-global" / "lib" / "node_modules" / "openclaw" / "skills"
+WORKSPACE_SKILLS_DIR = WORKSPACE_DIR / "skills"
 
 # Agent data (single main agent for now)
 # TODO: Integrate with OpenClaw to get real agent list
@@ -105,6 +108,92 @@ def restart_agent(agent_id):
     # In real deployment, this would send SIGUSR1 or call OpenClaw API
     return True
 
+def get_skills():
+    """List installed skills from OpenClaw"""
+    skills = []
+
+    # Scan builtin skills
+    if BUILTIN_SKILLS_DIR.exists():
+        for skill_dir in BUILTIN_SKILLS_DIR.iterdir():
+            if skill_dir.is_dir():
+                skill_file = skill_dir / "SKILL.md"
+                if skill_file.exists():
+                    skills.append({
+                        "name": skill_dir.name,
+                        "location": "builtin",
+                        "path": str(skill_dir)
+                    })
+
+    # Scan workspace skills
+    if WORKSPACE_SKILLS_DIR.exists():
+        for skill_dir in WORKSPACE_SKILLS_DIR.iterdir():
+            if skill_dir.is_dir():
+                skill_file = skill_dir / "SKILL.md"
+                if skill_file.exists():
+                    skills.append({
+                        "name": skill_dir.name,
+                        "location": "workspace",
+                        "path": str(skill_dir)
+                    })
+
+    return skills
+
+def get_channels():
+    """List configured messaging channels from OpenClaw config"""
+    channels = []
+
+    if OPENCLAW_CONFIG.exists():
+        try:
+            with open(OPENCLAW_CONFIG, 'r') as f:
+                config = json.load(f)
+
+                # Extract channel configurations
+                if 'discord' in config:
+                    channels.append({
+                        "type": "Discord",
+                        "id": config.get('discord', {}).get('channelId', 'unknown'),
+                        "status": "connected" if config.get('discord', {}).get('channelId') else "disconnected"
+                    })
+
+                if 'telegram' in config:
+                    channels.append({
+                        "type": "Telegram",
+                        "id": config.get('telegram', {}).get('chatId', 'unknown'),
+                        "status": "connected" if config.get('telegram', {}).get('chatId') else "disconnected"
+                    })
+
+        except Exception as e:
+            print(f"Error reading OpenClaw config: {e}")
+
+    return channels
+
+def get_cron_jobs():
+    """List cron jobs (mock implementation - requires OpenClaw integration)"""
+    # In real deployment, this would query OpenClaw's cron system
+    return [
+        {"id": "job-1", "name": "Morning Briefing", "schedule": "0 10 * * *", "enabled": True},
+        {"id": "job-2", "name": "Social Engagement", "schedule": "*/30 * * * *", "enabled": True},
+    ]
+
+def get_settings():
+    """Get OpenClaw settings"""
+    if OPENCLAW_CONFIG.exists():
+        try:
+            with open(OPENCLAW_CONFIG, 'r') as f:
+                return json.load(f)
+        except:
+            return {}
+    return {}
+
+def save_settings(settings):
+    """Save OpenClaw settings"""
+    try:
+        with open(OPENCLAW_CONFIG, 'w') as f:
+            json.dump(settings, f, indent=2)
+        return True
+    except:
+        return False
+
 class LumiDashboardHandler(SimpleHTTPRequestHandler):
     """Custom HTTP handler with API endpoints"""
 
@@ -123,6 +212,20 @@ class LumiDashboardHandler(SimpleHTTPRequestHandler):
                 "agents": AGENTS,
                 "port": 3001
             })
+        elif self.path == "/api/skills":
+            self.send_json_response({
+                "skills": get_skills()
+            })
+        elif self.path == "/api/channels":
+            self.send_json_response({
+                "channels": get_channels()
+            })
+        elif self.path == "/api/cron":
+            self.send_json_response({
+                "jobs": get_cron_jobs()
+            })
+        elif self.path == "/api/settings":
+            self.send_json_response(get_settings())
         elif self.path.startswith("/api/file"):
             # Parse query parameters
             parsed = urlparse(self.path)
@@ -170,6 +273,18 @@ class LumiDashboardHandler(SimpleHTTPRequestHandler):
                 self.send_json_response({"status": "ok"})
             else:
                 self.send_json_response({"error": "Failed to restart agent"}, status=500)
+
+        elif self.path == "/api/settings":
+            content_length = int(self.headers['Content-Length'])
+            post_data = self.rfile.read(content_length)
+            data = json.loads(post_data.decode())
+
+            success = save_settings(data)
+
+            if success:
+                self.send_json_response({"status": "ok"})
+            else:
+                self.send_json_response({"error": "Failed to save settings"}, status=500)
 
         else:
             self.send_json_response({"error": "Not found"}, status=404)
