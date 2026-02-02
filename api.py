@@ -202,41 +202,109 @@ class RuleExtractor:
         # Start node
         lines.append('    Start([Start Heartbeat]) --> CheckTime["Check Current Time"]')
 
-        # Time-based decision nodes
+        # Time-based decision
         if self.time_rules:
             lines.append('')
-            lines.append('    %% Time-based rules')
-            for i, rule in enumerate(self.time_rules[:3]):  # Limit to first 3 for readability
-                lines.append(f'    CheckTime -->|{rule["pattern"]}| TimeRule{i}[{rule["file"]}]')
+            lines.append('    %% Time-based decision')
+            lines.append('    CheckTime --> DetermineMode{Determine Mode}')
+            lines.append('    DetermineMode -->|10:00-23:00| DaytimeMode["Daytime Mode"]')
+            lines.append('    DetermineMode -->|23:00-10:00| OvernightMode["Overnight Mode"]')
 
-        # Mode switch nodes
-        if self.mode_rules:
+            # Daytime mode path
             lines.append('')
-            lines.append('    %% Mode switches')
-            lines.append('    CheckTime --> DaytimeCheck{Time in 10:00-23:00?}')
-            lines.append('    DaytimeCheck -->|Yes| DaytimeMode["Daytime Mode"]')
-            lines.append('    DaytimeCheck -->|No| OvernightMode["Overnight Mode"]')
+            lines.append('    %% Daytime mode checks')
+            lines.append('    DaytimeMode --> CheckNewMessages{New Discord messages?}')
+            lines.append('    CheckNewMessages -->|Yes| ProcessMessages["Process messages"]')
+            lines.append('    CheckNewMessages -->|No| CheckCalendar{Calendar events <2h?}')
+            lines.append('    ProcessMessages --> CheckCalendar')
+            lines.append('    CheckCalendar -->|Yes| NotifyEvent["Notify user"]')
+            lines.append('    CheckCalendar -->|No| CheckSocial{Hourly social engagement?}')
 
-        # Critical rules
-        if self.critical_rules:
+            # Social engagement
+            if self.permission_rules or self.critical_rules:
+                lines.append('')
+                lines.append('    CheckSocial -->|Yes| SocialEngage["Social engagement"]')
+                lines.append('    CheckSocial -->|No| NextHeartbeat("Wait 30 min")')
+
+                # Social engagement details
+                lines.append('')
+                lines.append('    SocialEngage --> MoltxEngage["Moltx: like 2-3, reply 2-3"]')
+                lines.append('    SocialEngage --> MoltbookEngage["Moltbook: comment 1-2, upvote 3-5"]')
+                lines.append('    SocialEngage --> FourClawEngage["4claw: reply 2-3"]')
+                lines.append('    MoltxEngage --> CheckOriginal{Every 2h?}')
+                lines.append('    MoltbookEngage --> CheckOriginal')
+                lines.append('    FourClawEngage --> CheckOriginal')
+
+                # Original post check
+                lines.append('')
+                lines.append('    CheckOriginal -->|Yes| PostOriginal["Post original content"]')
+                lines.append('    CheckOriginal -->|No| LogActivity["Log activity"]')
+                lines.append('    PostOriginal --> LogActivity')
+                lines.append('    LogActivity --> NextHeartbeat')
+
+            # Notify event path
+            if self.critical_rules:
+                lines.append('')
+                lines.append('    NotifyEvent --> CheckSocial')
+
+            # Next heartbeat
             lines.append('')
-            lines.append('    %% Critical rules')
-            for i, rule in enumerate(self.critical_rules[:5]):
-                lines.append(f'    Critical{i}["{rule["rule"][:50]}..."]')
-                lines.append(f'    Critical{i}:::critical')
+            lines.append('    NextHeartbeat --> Start')
+
+            # Overnight mode path
+            lines.append('')
+            lines.append('    %% Overnight mode path')
+            lines.append('    OvernightMode --> CheckQueue{Task queue empty?}')
+            lines.append('    CheckQueue -->|Yes| GenerateQueue["Generate new queue (75% existing, 25% new)"]')
+            lines.append('    CheckQueue -->|No| StartTask["Work on next task"]')
+            lines.append('    GenerateQueue --> StartTask')
+            lines.append('    StartTask --> CommitFrequently["Commit every 1-2 changes"]')
+            lines.append('    CommitFrequently --> CheckBriefing{10:00 AM?}')
+
+            # Morning briefing
+            lines.append('')
+            lines.append('    CheckBriefing -->|Yes| SendBriefing["Send morning briefing"]')
+            lines.append('    CheckBriefing -->|No| UpdateStatus["Update OVERNIGHT_STATUS.md"]')
+            lines.append('    SendBriefing --> UpdateStatus')
+            lines.append('    UpdateStatus --> NextHeartbeat')
 
         # Permission gates
         if self.permission_rules:
             lines.append('')
             lines.append('    %% Permission gates')
             for i, rule in enumerate(self.permission_rules[:3]):
-                lines.append(f'    Gate{i}["Ask first: {rule["rule"][:40]}..."]')
-                lines.append(f'    Gate{i}:::permission')
+                gate_text = rule.get('rule', 'Ask first')[:30]
+                lines.append(f'    Gate{i}["⚠️ {gate_text}..."]:::permission')
+
+        # Critical rules
+        if self.critical_rules:
+            lines.append('')
+            lines.append('    %% Critical rules')
+            for i, rule in enumerate(self.critical_rules[:3]):
+                rule_text = rule.get('rule', 'Critical')[:30]
+                lines.append(f'    Critical{i}["🔴 {rule_text}..."]:::critical')
 
         # Styling
         lines.append('')
         lines.append('    classDef critical fill:#f66,stroke:#333,stroke-width:2px,color:#fff')
         lines.append('    classDef permission fill:#fc6,stroke:#333,stroke-width:2px,color:#000')
+        lines.append('    classDef daytime fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff')
+        lines.append('    classDef overnight fill:#9b59b6,stroke:#8e44ad,stroke-width:2px,color:#fff')
+
+        # Apply styles
+        if self.critical_rules:
+            lines.append('')
+            for i in range(min(3, len(self.critical_rules))):
+                lines.append(f'    Critical{i}:::critical')
+
+        if self.permission_rules:
+            lines.append('')
+            for i in range(min(3, len(self.permission_rules))):
+                lines.append(f'    Gate{i}:::permission')
+
+        if self.time_rules:
+            lines.append('    DaytimeMode:::daytime')
+            lines.append('    OvernightMode:::overnight')
 
         return '\n'.join(lines)
 
