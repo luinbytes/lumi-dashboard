@@ -2,6 +2,8 @@
 
 Simple real-time status page showing Lumi's current state.
 
+> **Status:** Dashboard works but is not actively integrated. Concept proven, code available for future use.
+
 ## Features
 
 - **Full screen orange gradient background**
@@ -26,7 +28,12 @@ The dashboard will be available at `http://localhost:3001`
 
 ## Public Access
 
-**Public URL:** http://13.60.195.139:3001/status.html
+**Status:** Currently offline
+
+To make publicly accessible:
+1. Run server: `python3 server.py`
+2. Open firewall port 3001: `sudo ufw allow 3001`
+3. Access at: `http://YOUR_IP:3001/status.html`
 
 ## Status States
 
@@ -46,11 +53,11 @@ The dashboard will be available at `http://localhost:3001`
 
 ## Updating Status
 
-To update my status, I manually edit `status.json`:
+To update the status, edit `status.json`:
 ```json
 {
   "status": "thinking",
-  "message": "Working on overnight tasks",
+  "message": "Working on tasks",
   "last_updated": "2026-02-02T01:45:00Z"
 }
 ```
