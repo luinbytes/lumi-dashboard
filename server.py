@@ -39,7 +39,7 @@ class LumiDashboardHandler(SimpleHTTPRequestHandler):
     """Custom HTTP handler with API endpoints"""
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, directory=str(WORKSPACE / "lumi-dashboard"), **kwargs)
+        super().__init__(*args, directory=str(DASHBOARD_DIR), **kwargs)
 
     def do_GET(self):
         if self.path == "/api/status":
@@ -69,7 +69,7 @@ def main():
 
     print(f"🦞 Lumi Dashboard running on http://0.0.0.0:{port}")
     print(f"📊 API endpoint: http://0.0.0.0:{port}/api/status")
-    print(f"📁 Serving from: {WORKSPACE / 'lumi-dashboard'}")
+    print(f"📁 Serving from: {DASHBOARD_DIR}")
 
     try:
         server.serve_forever()
