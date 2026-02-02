@@ -23,7 +23,7 @@
         .header {
             background-color: #252526;
             border-bottom: 1px solid #3e3e42;
-            padding: 12px 20px;
+            padding: 0 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -33,19 +33,20 @@
         .header-left {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 20px;
         }
 
         .logo {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 600;
             color: #ffffff;
+            letter-spacing: 0.3px;
         }
 
         .status-indicator {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             font-size: 13px;
             color: #4ec9b0;
         }
@@ -55,33 +56,67 @@
             height: 8px;
             border-radius: 50%;
             background-color: #4ec9b0;
+            box-shadow: 0 0 8px rgba(78, 201, 176, 0.4);
+        }
+
+        .header-stats {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            font-size: 13px;
+            color: #cccccc;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stat-value {
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .stat-label {
+            color: #858585;
+            font-size: 12px;
         }
 
         .header-right {
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-size: 13px;
+            gap: 16px;
         }
 
         .btn {
-            padding: 6px 14px;
-            border: 1px solid #454545;
+            padding: 6px 16px;
+            border: none;
             background-color: #3c3c3c;
             color: #cccccc;
-            border-radius: 4px;
+            border-radius: 3px;
             cursor: pointer;
             font-size: 12px;
-            transition: background-color 0.2s;
+            font-weight: 400;
+            transition: all 0.2s;
         }
 
         .btn:hover {
             background-color: #454545;
         }
 
-        .port-display {
-            color: #858585;
-            font-size: 12px;
+        .btn-primary {
+            background-color: #0e639c;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: #1177bb;
+        }
+
+        .btn-icon {
+            padding: 6px 10px;
+            font-size: 14px;
         }
 
         /* Layout */
@@ -92,39 +127,42 @@
 
         /* Sidebar */
         .sidebar {
-            width: 240px;
+            width: 260px;
             background-color: #252526;
             border-right: 1px solid #3e3e42;
             display: flex;
             flex-direction: column;
-            padding: 8px 0;
+            padding: 12px 0;
         }
 
         .sidebar-section {
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
 
         .section-title {
-            padding: 8px 16px;
+            padding: 0 16px 8px;
             font-size: 11px;
             font-weight: 600;
             text-transform: uppercase;
             color: #858585;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
         }
 
         .agent-list {
             display: flex;
             flex-direction: column;
+            gap: 2px;
         }
 
         .agent-item {
-            padding: 8px 16px;
+            padding: 10px 16px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             cursor: pointer;
             transition: background-color 0.15s;
+            border-radius: 3px;
+            margin: 0 8px;
         }
 
         .agent-item:hover {
@@ -139,37 +177,58 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
+            flex-shrink: 0;
         }
 
         .agent-status.online {
             background-color: #4ec9b0;
+            box-shadow: 0 0 6px rgba(78, 201, 176, 0.4);
         }
 
         .agent-status.offline {
             background-color: #6e6e6e;
         }
 
+        .agent-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
         .agent-name {
             font-size: 13px;
             color: #cccccc;
+            font-weight: 400;
         }
 
         .agent-skills {
-            margin-left: auto;
             font-size: 11px;
             color: #858585;
         }
 
+        .nav-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
         .nav-item {
-            padding: 8px 16px;
+            padding: 10px 24px;
             font-size: 13px;
             color: #cccccc;
             cursor: pointer;
             transition: background-color 0.15s;
+            border-radius: 3px;
+            margin: 0 8px;
         }
 
         .nav-item:hover {
             background-color: #2d2d2d;
+        }
+
+        .nav-item.active {
+            background-color: #37373d;
         }
 
         /* Main Content */
@@ -181,90 +240,362 @@
         }
 
         .content-header {
-            padding: 12px 20px;
+            padding: 0 16px;
+            border-bottom: 1px solid #3e3e42;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 48px;
+        }
+
+        .content-title {
+            font-size: 13px;
+            color: #ffffff;
+            font-weight: 400;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 2px;
+            height: 100%;
+            align-items: flex-end;
+        }
+
+        .tab {
+            padding: 0 16px;
+            height: 100%;
+            background-color: #2d2d2d;
+            border: 1px solid transparent;
+            border-bottom: 1px solid #3e3e42;
+            font-size: 12px;
+            cursor: pointer;
+            color: #cccccc;
+            display: flex;
+            align-items: center;
+            transition: all 0.15s;
+        }
+
+        .tab:hover {
+            background-color: #323232;
+        }
+
+        .tab.active {
+            background-color: #1e1e1e;
+            border-bottom: 1px solid #1e1e1e;
+            color: #ffffff;
+        }
+
+        .editor-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .editor-wrapper {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .line-numbers {
+            background-color: #1e1e1e;
+            color: #858585;
+            padding: 16px 12px 16px 16px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            text-align: right;
+            user-select: none;
+            border-right: 1px solid #3e3e42;
+            min-width: 50px;
+            overflow: hidden;
+        }
+
+        .editor {
+            flex: 1;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            padding: 16px;
+            border: none;
+            resize: none;
+            outline: none;
+            white-space: pre;
+            overflow-y: auto;
+        }
+
+        /* Syntax highlighting (basic) */
+        .editor-preview {
+            flex: 1;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            padding: 16px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .editor-preview h1 {
+            color: #569cd6;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 16px 0 8px 0;
+        }
+
+        .editor-preview h2 {
+            color: #569cd6;
+            font-weight: 600;
+            font-size: 14px;
+            margin: 14px 0 6px 0;
+        }
+
+        .editor-preview h3 {
+            color: #4ec9b0;
+            font-weight: 500;
+            font-size: 13px;
+            margin: 12px 0 4px 0;
+        }
+
+        .editor-preview strong,
+        .editor-preview b {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .editor-preview code {
+            background-color: #2d2d2d;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 12px;
+            color: #ce9178;
+        }
+
+        .editor-preview a {
+            color: #9cdcfe;
+            text-decoration: underline;
+        }
+
+        /* Right Sidebar */
+        .action-bar {
+            width: 80px;
+            background-color: #252526;
+            border-left: 1px solid #3e3e42;
+            padding: 16px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .action-btn {
+            width: 56px;
+            height: 56px;
+            background-color: #3c3c3c;
+            border: 1px solid #454545;
+            border-radius: 4px;
+            color: #cccccc;
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .action-btn:hover {
+            background-color: #454545;
+            border-color: #5c5c5c;
+        }
+
+        .action-btn.primary {
+            background-color: #0e639c;
+            border-color: #0e639c;
+            color: #ffffff;
+        }
+
+        .action-btn.primary:hover {
+            background-color: #1177bb;
+        }
+
+        .action-btn-icon {
+            font-size: 18px;
+        }
+
+        .action-btn-label {
+            font-size: 9px;
+            text-transform: uppercase;
+        }
+
+        /* Help Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background-color: #1e1e1e;
+            border: 1px solid #3e3e42;
+            border-radius: 8px;
+            width: 900px;
+            max-width: 90vw;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            padding: 16px 20px;
             border-bottom: 1px solid #3e3e42;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
-        .content-title {
-            font-size: 14px;
-            color: #ffffff;
-            font-weight: 500;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 4px;
-        }
-
-        .tab {
-            padding: 6px 14px;
-            background-color: #2d2d2d;
-            border: 1px solid #454545;
-            border-radius: 4px;
-            font-size: 12px;
-            cursor: pointer;
-            color: #cccccc;
-        }
-
-        .tab.active {
-            background-color: #1e1e1e;
-            border-bottom-color: #1e1e1e;
+        .modal-title {
+            font-size: 16px;
+            font-weight: 600;
             color: #ffffff;
         }
 
-        .editor-container {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        .editor {
-            background-color: #1e1e1e;
-            color: #d4d4d4;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 13px;
-            line-height: 1.6;
-            padding: 16px;
-            border-radius: 4px;
-            border: 1px solid #3e3e42;
-            min-height: 400px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-
-        /* Right Sidebar */
-        .action-bar {
-            width: 60px;
-            background-color: #252526;
-            border-left: 1px solid #3e3e42;
-            padding: 16px 8px;
-        }
-
-        .save-btn {
-            width: 44px;
-            height: 44px;
-            background-color: #0e639c;
+        .modal-close {
+            background: none;
             border: none;
-            border-radius: 4px;
-            color: #ffffff;
-            font-size: 12px;
+            color: #858585;
+            font-size: 24px;
             cursor: pointer;
-            transition: background-color 0.2s;
+            padding: 0;
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: color 0.2s;
         }
 
-        .save-btn:hover {
-            background-color: #1177bb;
+        .modal-close:hover {
+            color: #cccccc;
+        }
+
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .help-section {
+            margin-bottom: 24px;
+        }
+
+        .help-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #3e3e42;
+        }
+
+        .help-item {
+            margin-bottom: 16px;
+        }
+
+        .help-item-title {
+            font-size: 13px;
+            font-weight: 500;
+            color: #cccccc;
+            margin-bottom: 6px;
+        }
+
+        .help-item-desc {
+            font-size: 12px;
+            color: #858585;
+            line-height: 1.6;
+        }
+
+        .help-item-integration {
+            font-size: 12px;
+            color: #4ec9b0;
+            margin-top: 6px;
+            padding: 8px 12px;
+            background-color: rgba(78, 201, 176, 0.1);
+            border-radius: 3px;
+            border-left: 3px solid #4ec9b0;
+        }
+
+        .flow-chart {
+            background-color: #252526;
+            border: 1px solid #3e3e42;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 12px;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .flow-step:last-child {
+            margin-bottom: 0;
+        }
+
+        .flow-step-number {
+            width: 24px;
+            height: 24px;
+            background-color: #0e639c;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #ffffff;
+            flex-shrink: 0;
+        }
+
+        .flow-step-content {
+            flex: 1;
+        }
+
+        .flow-step-title {
+            font-size: 13px;
+            font-weight: 500;
+            color: #cccccc;
+            margin-bottom: 4px;
+        }
+
+        .flow-step-desc {
+            font-size: 12px;
+            color: #858585;
         }
 
         /* Scrollbar */
         ::-webkit-scrollbar {
             width: 10px;
+            height: 10px;
         }
 
         ::-webkit-scrollbar-track {
@@ -280,25 +611,57 @@
             background: #4f4f4f;
         }
 
-        /* Loading */
-        .loading {
-            opacity: 0.6;
+        /* Save status */
+        .save-status {
+            position: fixed;
+            bottom: 20px;
+            right: 100px;
+            background-color: #3c3c3c;
+            color: #cccccc;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 100;
+            transition: opacity 0.3s;
+        }
+
+        .save-status.hidden {
+            opacity: 0;
+        }
+
+        .save-status.success {
+            background-color: #4ec9b0;
+            color: #1e1e1e;
         }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="header-left">
-            <div class="logo">OpenClaw</div>
+            <div class="logo">OpenClaw Admin</div>
             <div class="status-indicator">
                 <div class="status-dot"></div>
                 <span>Connected</span>
             </div>
         </div>
+        <div class="header-stats">
+            <div class="stat-item">
+                <span class="stat-value" id="portDisplay">8080</span>
+                <span class="stat-label">Port</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="envDisplay">local</span>
+                <span class="stat-label">Environment</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="agentCount">0</span>
+                <span class="stat-label">Agents</span>
+            </div>
+        </div>
         <div class="header-right">
             <button class="btn" onclick="refreshDashboard()">Refresh</button>
             <button class="btn" onclick="restartAgent()">Restart</button>
-            <div class="port-display">Port: <span id="port">8080</span></div>
+            <button class="btn btn-primary" onclick="showHelp()">Help</button>
         </div>
     </div>
 
@@ -311,38 +674,288 @@
                 </div>
             </div>
             <div class="sidebar-section">
+                <div class="section-title">Skills</div>
+                <div class="nav-list">
+                    <div class="nav-item" onclick="showSection('skills')">View All Skills</div>
+                </div>
+            </div>
+            <div class="sidebar-section">
                 <div class="section-title">Channels</div>
-                <div class="nav-item" onclick="showChannels()">Channels</div>
+                <div class="nav-list">
+                    <div class="nav-item" onclick="showSection('channels')">Channels</div>
+                </div>
             </div>
             <div class="sidebar-section">
                 <div class="section-title">Cron</div>
-                <div class="nav-item" onclick="showCron()">Cron Jobs</div>
+                <div class="nav-list">
+                    <div class="nav-item" onclick="showSection('cron')">Cron Jobs</div>
+                </div>
+            </div>
+            <div class="sidebar-section">
+                <div class="section-title">Config</div>
+                <div class="nav-list">
+                    <div class="nav-item" onclick="showSection('config')">Settings</div>
+                </div>
             </div>
         </div>
 
         <div class="main-content">
             <div class="content-header">
-                <div class="content-title" id="contentTitle">main - Soul.md</div>
-                <div class="tabs">
-                    <div class="tab active" onclick="switchTab('main')">Main</div>
-                    <div class="tab" onclick="switchTab('sub')">Sub</div>
+                <div class="content-title" id="contentTitle">main - SOUL.md</div>
+                <div class="tabs" id="fileTabs">
+                    <!-- Tabs loaded dynamically -->
                 </div>
             </div>
             <div class="editor-container">
-                <textarea class="editor" id="editor" spellcheck="false"></textarea>
+                <div class="editor-wrapper">
+                    <div class="line-numbers" id="lineNumbers"></div>
+                    <textarea class="editor" id="editor" spellcheck="false"></textarea>
+                </div>
             </div>
         </div>
 
         <div class="action-bar">
-            <button class="save-btn" onclick="saveFile()">Save</button>
+            <button class="action-btn" onclick="undo()">
+                <span class="action-btn-icon">↶</span>
+                <span class="action-btn-label">Undo</span>
+            </button>
+            <button class="action-btn" onclick="redo()">
+                <span class="action-btn-icon">↷</span>
+                <span class="action-btn-label">Redo</span>
+            </button>
+            <button class="action-btn primary" onclick="saveFile()">
+                <span class="action-btn-icon">💾</span>
+                <span class="action-btn-label">Save</span>
+            </button>
+            <button class="action-btn" onclick="formatMarkdown()">
+                <span class="action-btn-icon">✨</span>
+                <span class="action-btn-label">Format</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="save-status hidden" id="saveStatus">All changes saved</div>
+
+    <!-- Help Modal -->
+    <div class="modal-overlay" id="helpModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">OpenClaw Admin - How to Use</div>
+                <button class="modal-close" onclick="hideHelp()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="help-section">
+                    <div class="help-section-title">Dashboard Overview</div>
+                    <div class="help-item">
+                        <div class="help-item-title">What is this dashboard?</div>
+                        <div class="help-item-desc">
+                            The OpenClaw Admin Dashboard is a web-based interface for managing your OpenClaw agents, editing their configuration files, and monitoring their status. It provides direct access to agent identity files (SOUL.md), memory (MEMORY.md), and other critical configuration.
+                        </div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-item-title">Real-time status</div>
+                        <div class="help-item-desc">
+                            The dashboard shows real-time connection status, the number of active agents, and environment context (local/production). Status indicators in the sidebar show which agents are currently online and responding.
+                        </div>
+                        <div class="help-item-integration">
+                            <strong>Integration:</strong> Status is fetched from the <code>/api/status</code> endpoint every 10 seconds. Agent online/offline state is determined by OpenClaw's internal health checks.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="help-section">
+                    <div class="help-section-title">Agent Management</div>
+                    <div class="help-item">
+                        <div class="help-item-title">Selecting an Agent</div>
+                        <div class="help-item-desc">
+                            Click on any agent in the sidebar to select it. The selected agent's files will be loaded in the main editor area. The active agent is highlighted with a darker background.
+                        </div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-item-title">Agent Status Indicators</div>
+                        <div class="help-item-desc">
+                            <span style="color: #4ec9b0;">●</span> Green dot = Agent is online and responding<br>
+                            <span style="color: #6e6e6e;">●</span> Gray dot = Agent is offline or unreachable
+                        </div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-item-title">Restarting an Agent</div>
+                        <div class="help-item-desc">
+                            Click the "Restart" button in the header to restart the currently selected agent. A confirmation dialog will appear before the restart is initiated. This sends a restart command to the OpenClaw gateway.
+                        </div>
+                        <div class="help-item-integration">
+                            <strong>Integration:</strong> Restart sends a POST request to <code>/api/restart</code> with the agent ID. The OpenClaw gateway handles the actual restart process.
+                        </div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-item-title">Agent Skills Count</div>
+                        <div class="help-item-desc">
+                            Each agent card shows the number of skills available to that agent. Skills are the tools and capabilities the agent can access (e.g., web search, file editing, GitHub API).
+                        </div>
+                    </div>
+                </div>
+
+                <div class="help-section">
+                    <div class="help-section-title">File Editing</div>
+                    <div class="help-item">
+                        <div class="help-item-title">File Tabs</div>
+                        <div class="help-item-desc">
+                            The top tab bar shows available files for the selected agent. Common files include:<br>
+                            <strong>SOUL.md</strong> - Agent identity, personality, and behavioral rules<br>
+                            <strong>MEMORY.md</strong> - Long-term memory, lessons learned, important facts<br>
+                            <strong>USER.md</strong> - Information about the user being served<br>
+                            <strong>TOOLS.md</strong> - Local tool configurations and notes
+                        </div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-item-title">Line Numbers</div>
+                        <div class="help-item-desc">
+                            The editor shows line numbers on the left side for easy reference. These update automatically as you type and scroll.
+                        </div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-item-title">Saving Changes</div>
+                        <div class="help-item-desc">
+                            Click the "Save" button in the right action bar (or press Ctrl+S) to save your changes. A confirmation message will appear at the bottom right. Changes are immediately written to the agent's workspace files.
+                        </div>
+                        <div class="help-item-integration">
+                            <strong>Integration:</strong> Save sends the file content to <code>/api/file</code> endpoint, which writes directly to the workspace. No server restart required - changes take effect immediately.
+                        </div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-item-title">Undo/Redo</div>
+                        <div class="help-item-desc">
+                            Use the undo/redo buttons in the action bar to navigate your edit history. Currently, this tracks changes within the current editing session.
+                        </div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-item-title">Format Markdown</div>
+                        <div class="help-item-desc">
+                            Click the "Format" button to apply basic markdown formatting (headings, bold, code blocks). This is a lightweight formatter - for complex formatting, use a dedicated markdown editor.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="help-section">
+                    <div class="help-section-title">Navigation Sections</div>
+                    <div class="help-item">
+                        <div class="help-item-title">Skills</div>
+                        <div class="help-item-desc">
+                            View and manage agent skills. Shows all available skills and their configurations. Skills define what tools and capabilities agents can access.
+                        </div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-item-title">Channels</div>
+                        <div class="help-item-desc">
+                            Manage messaging channels (Discord, Telegram, WhatsApp, etc.). View active channels, their status, and configuration.
+                        </div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-item-title">Cron Jobs</div>
+                        <div class="help-item-desc">
+                            Schedule automated tasks and reminders. Create one-shot or recurring jobs (e.g., daily summaries, hourly checks, weekly reports).
+                        </div>
+                        <div class="help-item-integration">
+                            <strong>Integration:</strong> Cron jobs are managed by the OpenClaw gateway and trigger system events or agent turns at specified times.
+                        </div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-item-title">Config / Settings</div>
+                        <div class="help-item-desc">
+                            Global configuration for OpenClaw and the dashboard. Includes theme settings, API keys, and behavior preferences.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="help-section">
+                    <div class="help-section-title">Behavior Flow</div>
+                    <div class="flow-chart">
+                        <div class="flow-step">
+                            <div class="flow-step-number">1</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-title">Dashboard loads</div>
+                                <div class="flow-step-desc">Fetches initial data from <code>/api/dashboard</code> endpoint (agents list, port, environment)</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-step-number">2</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-title">User selects agent</div>
+                                <div class="flow-step-desc">Clicking an agent in sidebar triggers <code>selectAgent()</code>, loads agent's files via <code>/api/file?agent=X&file=Y</code></div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-step-number">3</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-title">User edits file</div>
+                                <div class="flow-step-desc">Changes are made in the textarea. Line numbers update dynamically. No validation yet.</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-step-number">4</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-title">User saves file</div>
+                                <div class="flow-step-desc">Save button sends POST to <code>/api/file</code> with agent, file, content. File is written to workspace. "All changes saved" confirmation appears.</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-step-number">5</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-title">Agent behavior updates</div>
+                                <div class="flow-step-desc">Next heartbeat or message processing cycle reads updated file. New behavior takes effect immediately without restart (for most files like SOUL.md, MEMORY.md).</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-step-number">6</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-title">User restarts agent</div>
+                                <div class="flow-step-desc">Restart button sends POST to <code>/api/restart</code>. Gateway restarts the agent session. Pending work may be lost.</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-step-number">7</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-title">Dashboard auto-refreshes</div>
+                                <div class="flow-step-desc">Every 10 seconds, dashboard re-fetches status to keep agent states current. Manual refresh available via "Refresh" button.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="help-section">
+                    <div class="help-section-title">Keyboard Shortcuts</div>
+                    <div class="help-item">
+                        <div class="help-item-title">Ctrl+S / Cmd+S</div>
+                        <div class="help-item-desc">Save current file</div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-item-title">Ctrl+Z / Cmd+Z</div>
+                        <div class="help-item-desc">Undo last edit</div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-item-title">Ctrl+Y / Cmd+Y</div>
+                        <div class="help-item-desc">Redo last edit</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
         let currentAgent = 'main';
-        let currentFile = 'Soul.md';
-        let currentTab = 'main';
+        let currentFile = 'SOUL.md';
+        let currentTab = 'SOUL';
         let agents = [];
+        let undoStack = [];
+        let redoStack = [];
+
+        const fileTabs = [
+            { id: 'SOUL', name: 'SOUL.md' },
+            { id: 'USER', name: 'USER.md' },
+            { id: 'IDENTITY', name: 'IDENTITY.md' },
+            { id: 'MEMORY', name: 'MEMORY.md' },
+            { id: 'TOOLS', name: 'TOOLS.md' }
+        ];
 
         // Load dashboard data
         async function loadDashboard() {
@@ -350,9 +963,12 @@
                 const response = await fetch('/api/dashboard');
                 const data = await response.json();
                 agents = data.agents || [];
-                document.getElementById('port').textContent = data.port || 8080;
+                document.getElementById('portDisplay').textContent = data.port || 8080;
+                document.getElementById('agentCount').textContent = agents.length;
+                document.getElementById('envDisplay').textContent = data.environment || 'local';
 
                 renderAgents();
+                renderTabs();
                 loadFile();
             } catch (error) {
                 console.error('Failed to load dashboard:', error);
@@ -365,8 +981,20 @@
             container.innerHTML = agents.map(agent => `
                 <div class="agent-item ${agent.id === currentAgent ? 'active' : ''}" onclick="selectAgent('${agent.id}')">
                     <div class="agent-status ${agent.online ? 'online' : 'offline'}"></div>
-                    <div class="agent-name">${agent.name}</div>
-                    <div class="agent-skills">${agent.skills || 0}</div>
+                    <div class="agent-info">
+                        <div class="agent-name">${agent.name}</div>
+                        <div class="agent-skills">${agent.skills || 0} skills</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render tabs
+        function renderTabs() {
+            const container = document.getElementById('fileTabs');
+            container.innerHTML = fileTabs.map(tab => `
+                <div class="tab ${tab.id === currentTab ? 'active' : ''}" onclick="switchTab('${tab.id}')">
+                    ${tab.id}
                 </div>
             `).join('');
         }
@@ -374,32 +1002,27 @@
         // Select agent
         function selectAgent(agentId) {
             currentAgent = agentId;
-            currentFile = 'Soul.md';
-            currentTab = 'main';
+            currentFile = 'SOUL.md';
+            currentTab = 'SOUL';
 
             const agent = agents.find(a => a.id === agentId);
             document.getElementById('contentTitle').textContent = `${agentId} - ${currentFile}`;
 
             renderAgents();
-            switchTab('main');
+            renderTabs();
             loadFile();
         }
 
         // Switch tab
-        function switchTab(tab) {
-            currentTab = tab;
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
-
-            // Update file based on tab
-            if (tab === 'main') {
-                currentFile = 'Soul.md';
-            } else {
-                currentFile = 'MEMORY.md';
-            }
+        function switchTab(tabId) {
+            currentTab = tabId;
+            const tab = fileTabs.find(t => t.id === tabId);
+            currentFile = tab.name;
 
             const agent = agents.find(a => a.id === currentAgent);
-            document.getElementById('contentTitle').textContent = `${agentId} - ${currentFile}`;
+            document.getElementById('contentTitle').textContent = `${currentAgent} - ${currentFile}`;
+
+            renderTabs();
             loadFile();
         }
 
@@ -410,13 +1033,24 @@
                 if (response.ok) {
                     const data = await response.json();
                     document.getElementById('editor').value = data.content || '';
+                    undoStack = [];
+                    redoStack = [];
+                    updateLineNumbers();
                 } else {
-                    document.getElementById('editor').value = '// File not found';
+                    document.getElementById('editor').value = `# ${currentFile}\n\n// File not found or empty`;
                 }
             } catch (error) {
                 console.error('Failed to load file:', error);
-                document.getElementById('editor').value = '// Error loading file';
+                document.getElementById('editor').value = `# ${currentFile}\n\n// Error loading file`;
             }
+        }
+
+        // Update line numbers
+        function updateLineNumbers() {
+            const editor = document.getElementById('editor');
+            const lineNumbers = document.getElementById('lineNumbers');
+            const lines = editor.value.split('\n').length;
+            lineNumbers.innerHTML = Array.from({ length: lines }, (_, i) => i + 1).join('<br>');
         }
 
         // Save file
@@ -430,14 +1064,26 @@
                 });
 
                 if (response.ok) {
-                    alert('File saved successfully!');
+                    showSaveStatus(true);
                 } else {
-                    alert('Failed to save file');
+                    showSaveStatus(false);
                 }
             } catch (error) {
                 console.error('Failed to save file:', error);
-                alert('Error saving file');
+                showSaveStatus(false);
             }
+        }
+
+        // Show save status
+        function showSaveStatus(success) {
+            const status = document.getElementById('saveStatus');
+            status.textContent = success ? 'All changes saved' : 'Failed to save';
+            status.classList.toggle('success', success);
+            status.classList.remove('hidden');
+
+            setTimeout(() => {
+                status.classList.add('hidden');
+            }, 2000);
         }
 
         // Refresh dashboard
@@ -468,15 +1114,99 @@
             }
         }
 
-        // Show channels (placeholder)
-        function showChannels() {
-            alert('Channels management - coming soon!');
+        // Show section (placeholder)
+        function showSection(section) {
+            alert(`${section} management - coming soon!`);
         }
 
-        // Show cron (placeholder)
-        function showCron() {
-            alert('Cron jobs management - coming soon!');
+        // Undo
+        function undo() {
+            if (undoStack.length > 0) {
+                const editor = document.getElementById('editor');
+                redoStack.push(editor.value);
+                editor.value = undoStack.pop();
+                updateLineNumbers();
+            }
         }
+
+        // Redo
+        function redo() {
+            if (redoStack.length > 0) {
+                const editor = document.getElementById('editor');
+                undoStack.push(editor.value);
+                editor.value = redoStack.pop();
+                updateLineNumbers();
+            }
+        }
+
+        // Format markdown (basic)
+        function formatMarkdown() {
+            const editor = document.getElementById('editor');
+            const content = editor.value;
+
+            // Track changes for undo
+            undoStack.push(content);
+            redoStack = [];
+
+            // Basic formatting
+            let formatted = content
+                // Ensure headings have space after #
+                .replace(/^(#{1,6})([^\s#])/gm, '$1 $2')
+                // Ensure bold has proper spacing
+                .replace(/\*\*(\S)/g, '** $1')
+                .replace(/(\S)\*\*/g, '$1 **')
+                // Ensure code blocks are empty lines
+                .replace(/```([a-z]*)\n([^`]*)```/gs, '```$1\n$2\n```');
+
+            editor.value = formatted;
+            updateLineNumbers();
+        }
+
+        // Show help modal
+        function showHelp() {
+            document.getElementById('helpModal').classList.add('active');
+        }
+
+        // Hide help modal
+        function hideHelp() {
+            document.getElementById('helpModal').classList.remove('active');
+        }
+
+        // Track edits for undo
+        let lastValue = '';
+        document.getElementById('editor').addEventListener('input', function() {
+            const currentValue = this.value;
+            if (lastValue !== currentValue && lastValue !== '') {
+                undoStack.push(lastValue);
+                if (undoStack.length > 50) undoStack.shift();
+                redoStack = [];
+            }
+            lastValue = currentValue;
+            updateLineNumbers();
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                saveFile();
+            }
+            if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+                e.preventDefault();
+                undo();
+            }
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.shiftKey && e.key === 'Z'))) {
+                e.preventDefault();
+                redo();
+            }
+        });
+
+        // Close modal on outside click
+        document.getElementById('helpModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideHelp();
+            }
+        });
 
         // Initialize
         loadDashboard();
